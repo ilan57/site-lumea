@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commander — LUMÉA™</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cream: #FAF8F5;
+            --gold: #C9A962;
+            --gold-dark: #A88B4A;
+            --text: #1A1A1A;
+            --text-soft: #4A4A4A;
+            --text-muted: #8A8A8A;
+            --border: #E8E4E0;
+            --success: #4A7C59;
+            --error: #C45C5C;
+            --font-display: 'Cormorant Garamond', Georgia, serif;
+            --font-body: 'Montserrat', sans-serif;
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: var(--font-body); background: var(--cream); color: var(--text); font-size: 14px; line-height: 1.7; }
+        a { color: var(--gold-dark); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        /* Header */
+        .header {
+            background: #fff;
+            border-bottom: 1px solid var(--border);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .logo { font-family: var(--font-display); font-size: 1.5rem; letter-spacing: 0.1em; color: var(--text); font-weight: 600; }
+        .logo span { color: var(--gold-dark); }
+        .secure-badge { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-muted); }
+        .secure-badge svg { color: var(--success); }
+
+        /* Layout */
+        .checkout-layout {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 24px;
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 48px;
+            align-items: start;
+        }
+        @media (max-width: 768px) {
+            .checkout-layout { grid-template-columns: 1fr; padding: 24px 16px; gap: 24px; }
+            .order-summary { order: -1; }
+        }
+
+        /* Steps */
+        .steps {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            margin-bottom: 32px;
+        }
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+        .step.active { color: var(--gold-dark); }
+        .step.done { color: var(--success); }
+        .step-num {
+            width: 24px; height: 24px; border-radius: 50%;
+            background: var(--border); display: flex; align-items: center;
+            justify-content: center; font-size: 11px; font-weight: 600;
+        }
+        .step.active .step-num { background: var(--gold); color: #fff; }
+        .step.done .step-num { background: var(--success); color: #fff; }
+        .step-sep { width: 32px; height: 1px; background: var(--border); margin: 0 4px; }
+
+        /* Card */
+        .card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 28px;
+            margin-bottom: 16px;
+        }
+        .card h3 {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            font-weight: 400;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        /* Form */
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        @media (max-width: 480px) { .form-row { grid-template-columns: 1fr; } }
+        .form-group { margin-bottom: 14px; }
+        .form-group label {
+            display: block;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-soft);
+            margin-bottom: 6px;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 11px 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: var(--font-body);
+            font-size: 14px;
+            color: var(--text);
+            background: #fff;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .form-group input:focus, .form-group select:focus { border-color: var(--gold); }
+        .form-group input.error { border-color: var(--error); }
+
+        /* Quantity */
+        .qty-selector {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            width: fit-content;
+        }
+        .qty-btn {
+            width: 38px; height: 38px;
+            background: #f5f5f5;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex; align-items: center; justify-content: center;
+            transition: background 0.15s;
+        }
+        .qty-btn:hover { background: var(--border); }
+        .qty-val {
+            width: 44px; height: 38px;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 600; font-size: 15px;
+            border-left: 1px solid var(--border);
+            border-right: 1px solid var(--border);
+        }
+
+        /* Shipping options */
+        .shipping-options { display: flex; flex-direction: column; gap: 10px; }
+        .shipping-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+        .shipping-option.selected { border-color: var(--gold); background: #fdf9f0; }
+        .shipping-option-left { display: flex; align-items: center; gap: 10px; }
+        .shipping-option input[type="radio"] { accent-color: var(--gold-dark); }
+        .shipping-label { font-weight: 500; font-size: 13px; }
+        .shipping-delay { font-size: 11px; color: var(--text-muted); }
+        .shipping-price { font-weight: 600; font-size: 14px; }
+        .shipping-price.free { color: var(--success); }
+
+        /* Btn */
+        .btn-pay {
+            width: 100%;
+            padding: 16px;
+            background: var(--gold);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-family: var(--font-body);
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .btn-pay:hover { background: var(--gold-dark); }
+        .btn-pay:active { transform: scale(0.99); }
+        .btn-pay:disabled { opacity: 0.6; cursor: not-allowed; }
+        .btn-back {
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-family: var(--font-body);
+            font-size: 13px;
+            color: var(--text-soft);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-back:hover { background: var(--border); }
+
+        /* Order summary */
+        .order-summary {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            position: sticky;
+            top: 80px;
+        }
+        .order-summary h3 {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            font-weight: 400;
+            margin-bottom: 16px;
+        }
+        .product-line {
+            display: flex;
+            gap: 14px;
+            align-items: center;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 16px;
+        }
+        .product-img {
+            width: 70px; height: 70px;
+            border-radius: 8px;
+            object-fit: cover;
+            background: #f5f5f5;
+            flex-shrink: 0;
+        }
+        .product-info h4 { font-family: var(--font-display); font-size: 1rem; font-weight: 500; margin-bottom: 2px; }
+        .product-info p { font-size: 12px; color: var(--text-muted); }
+        .price-lines { display: flex; flex-direction: column; gap: 8px; }
+        .price-line { display: flex; justify-content: space-between; font-size: 13px; }
+        .price-line .label { color: var(--text-soft); }
+        .price-line.free .val { color: var(--success); font-weight: 500; }
+        .price-line.total {
+            border-top: 1px solid var(--border);
+            padding-top: 12px;
+            margin-top: 4px;
+            font-weight: 600;
+            font-size: 16px;
+        }
+        .badge-savings {
+            background: #fff0e0;
+            color: #b8722a;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 20px;
+        }
+        .guarantees {
+            margin-top: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .guarantee-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--text-soft);
+        }
+        .guarantee-item svg { color: var(--success); flex-shrink: 0; }
+
+        /* Auth toggle */
+        .auth-toggle {
+            background: #f9f7f4;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: var(--text-soft);
+        }
+
+        /* Success page */
+        .success-page {
+            display: none;
+            text-align: center;
+            padding: 60px 24px;
+        }
+        .success-icon {
+            width: 80px; height: 80px;
+            background: #e8f5ee;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+        }
+        .success-icon svg { color: var(--success); }
+        .success-page h2 { font-family: var(--font-display); font-size: 2rem; margin-bottom: 12px; }
+        .success-page p { color: var(--text-soft); max-width: 480px; margin: 0 auto 24px; }
+        .order-details-box {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            max-width: 480px;
+            margin: 0 auto 32px;
+            text-align: left;
+        }
+        .order-detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 13px;
+        }
+        .order-detail-row:last-child { border-bottom: none; }
+        .order-detail-row .label { color: var(--text-muted); }
+        .order-detail-row .val { font-weight: 500; }
+        .btn-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            background: var(--gold);
+            color: #fff;
+            border-radius: 8px;
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+        }
+        .btn-home:hover { background: var(--gold-dark); text-decoration: none; }
+
+        /* Spinner */
+        .spinner {
+            width: 20px; height: 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Error msg */
+        .msg-error {
+            background: #fef2f2;
+            color: var(--error);
+            border: 1px solid #fca5a5;
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 13px;
+            margin-bottom: 16px;
+            display: none;
+        }
+        .msg-error.show { display: block; }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <a href="/" class="logo">LUMÉA<span>™</span></a>
+    <div class="secure-badge">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+        Paiement 100% sécurisé
+    </div>
+</header>
+
+<!-- Success page -->
+<div class="success-page" id="successPage">
+    <div class="success-icon">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+    </div>
+    <h2>Commande confirmée !</h2>
+    <p>Merci pour votre achat. Vous recevrez un email de confirmation sous peu. Votre masque LUMÉA™ vous sera livré dans les meilleurs délais.</p>
+    <div class="order-details-box" id="orderDetailsBox"></div>
+    <a href="/" class="btn-home">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+        Retour à l'accueil
+    </a>
+</div>
+
+<!-- Checkout form -->
+<div class="checkout-layout" id="checkoutLayout">
+    <div class="checkout-main">
+        <!-- Steps -->
+        <div class="steps" id="stepsBar">
+            <div class="step active" id="step1Ind">
+                <div class="step-num">1</div>
+                Coordonnées
+            </div>
+            <div class="step-sep"></div>
+            <div class="step" id="step2Ind">
+                <div class="step-num">2</div>
+                Livraison
+            </div>
+            <div class="step-sep"></div>
+            <div class="step" id="step3Ind">
+                <div class="step-num">3</div>
+                Paiement
+            </div>
+        </div>
+
+        <!-- STEP 1 : Coordonnées -->
+        <div id="step1">
+            <div class="auth-toggle">
+                Déjà client ? <a href="/account" id="loginLink">Connectez-vous</a> pour préremplir vos informations.
+            </div>
+
+            <div class="card">
+                <h3>Vos coordonnées</h3>
+                <div class="msg-error" id="errStep1"></div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Prénom *</label>
+                        <input type="text" id="prenom" placeholder="Marie" autocomplete="given-name">
+                    </div>
+                    <div class="form-group">
+                        <label>Nom *</label>
+                        <input type="text" id="nom" placeholder="Martin" autocomplete="family-name">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Email *</label>
+                    <input type="email" id="email" placeholder="marie@exemple.fr" autocomplete="email">
+                </div>
+                <div class="form-group">
+                    <label>Téléphone</label>
+                    <input type="tel" id="telephone" placeholder="06 12 34 56 78" autocomplete="tel">
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Quantité</h3>
+                <div style="display:flex; align-items:center; gap:16px;">
+                    <div class="qty-selector">
+                        <button class="qty-btn" onclick="changeQty(-1)">−</button>
+                        <div class="qty-val" id="qtyDisplay">1</div>
+                        <button class="qty-btn" onclick="changeQty(1)">+</button>
+                    </div>
+                    <span style="color:var(--text-soft); font-size:13px;">unité(s) × 129,00 €</span>
+                </div>
+            </div>
+
+            <button class="btn-pay" onclick="goStep2()">
+                Continuer vers la livraison
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </button>
+        </div>
+
+        <!-- STEP 2 : Livraison -->
+        <div id="step2" style="display:none">
+            <button class="btn-back" onclick="goStep1()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                Retour
+            </button>
+
+            <div class="card">
+                <h3>Adresse de livraison</h3>
+                <div class="msg-error" id="errStep2"></div>
+                <div class="form-group">
+                    <label>Adresse *</label>
+                    <input type="text" id="adresse" placeholder="12 rue des Lilas" autocomplete="street-address">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Code postal *</label>
+                        <input type="text" id="code_postal" placeholder="75001" autocomplete="postal-code">
+                    </div>
+                    <div class="form-group">
+                        <label>Ville *</label>
+                        <input type="text" id="ville" placeholder="Paris" autocomplete="address-level2">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Pays *</label>
+                    <select id="pays" onchange="updateShipping()">
+                        <option value="France">France</option>
+                        <option value="Belgique">Belgique</option>
+                        <option value="Luxembourg">Luxembourg</option>
+                        <option value="Suisse">Suisse</option>
+                        <option value="Allemagne">Allemagne</option>
+                        <option value="Espagne">Espagne</option>
+                        <option value="Italie">Italie</option>
+                        <option value="Pays-Bas">Pays-Bas</option>
+                        <option value="Portugal">Portugal</option>
+                        <option value="Autriche">Autriche</option>
+                        <option value="Autre">Autre pays</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Mode de livraison</h3>
+                <div class="shipping-options">
+                    <div class="shipping-option selected" id="shippingOpt">
+                        <div class="shipping-option-left">
+                            <input type="radio" name="shipping" checked>
+                            <div>
+                                <div class="shipping-label">Livraison standard</div>
+                                <div class="shipping-delay" id="shippingDelay">2-3 jours ouvrés</div>
+                            </div>
+                        </div>
+                        <div class="shipping-price free" id="shippingPrice">GRATUIT</div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-pay" onclick="goStep3()">
+                Continuer vers le paiement
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </button>
+        </div>
+
+        <!-- STEP 3 : Récap + paiement -->
+        <div id="step3" style="display:none">
+            <button class="btn-back" onclick="goStep2()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                Retour
+            </button>
+
+            <div class="card">
+                <h3>Récapitulatif</h3>
+                <div id="recapContent"></div>
+            </div>
+
+            <div class="card">
+                <h3>Paiement sécurisé</h3>
+                <div class="msg-error" id="errStep3"></div>
+                <p style="color:var(--text-soft); font-size:13px; margin-bottom:16px;">
+                    Vous allez être redirigé vers notre page de paiement sécurisé. Vos données bancaires ne nous sont jamais transmises.
+                </p>
+                <div style="display:flex; gap:8px; margin-bottom:20px; flex-wrap:wrap;">
+                    <div style="background:#f5f5f5; border-radius:4px; padding:4px 10px; font-size:11px; font-weight:600; color:#555;">VISA</div>
+                    <div style="background:#f5f5f5; border-radius:4px; padding:4px 10px; font-size:11px; font-weight:600; color:#555;">Mastercard</div>
+                    <div style="background:#f5f5f5; border-radius:4px; padding:4px 10px; font-size:11px; font-weight:600; color:#555;">American Express</div>
+                    <div style="background:#f5f5f5; border-radius:4px; padding:4px 10px; font-size:11px; font-weight:600; color:#555;">PayPal</div>
+                </div>
+                <button class="btn-pay" id="payBtn" onclick="submitOrder()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+                    Payer <span id="payTotal">129,00 €</span> en toute sécurité
+                </button>
+                <p style="text-align:center; font-size:11px; color:var(--text-muted); margin-top:12px;">
+                    🔒 Paiement crypté SSL · Satisfait ou remboursé 60 jours
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Summary -->
+    <aside class="order-summary">
+        <h3>Votre commande</h3>
+        <div class="product-line">
+            <img src="lumea-masque-1.jpg" alt="LUMÉA Pro" class="product-img">
+            <div class="product-info">
+                <h4>LUMÉA™ Pro Masque LED</h4>
+                <p>7 couleurs · 150 LEDs · USB-C</p>
+                <p style="margin-top:4px;">Qté : <span id="summaryQty">1</span></p>
+            </div>
+        </div>
+        <div class="price-lines">
+            <div class="price-line">
+                <span class="label">Prix unitaire</span>
+                <span class="val">
+                    <span style="text-decoration:line-through; color:var(--text-muted); font-size:12px;">199,00 €</span>
+                    129,00 €
+                </span>
+            </div>
+            <div class="price-line">
+                <span class="label">Sous-total (<span id="summaryQty2">1</span>x)</span>
+                <span class="val" id="summarySubtotal">129,00 €</span>
+            </div>
+            <div class="price-line free">
+                <span class="label">Livraison</span>
+                <span class="val" id="summaryShipping">GRATUIT</span>
+            </div>
+            <div class="price-line">
+                <span class="label" style="font-size:11px; color:var(--text-muted);">Économies</span>
+                <span class="val"><span class="badge-savings" id="summarySavings">-35% · -70,00 €</span></span>
+            </div>
+            <div class="price-line total">
+                <span>Total</span>
+                <span id="summaryTotal">129,00 €</span>
+            </div>
+        </div>
+        <div class="guarantees">
+            <div class="guarantee-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                Paiement 100% sécurisé
+            </div>
+            <div class="guarantee-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline></svg>
+                Retour gratuit 60 jours
+            </div>
+            <div class="guarantee-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                Livraison rapide suivie
+            </div>
+            <div class="guarantee-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                Support 7j/7
+            </div>
+        </div>
+    </aside>
+</div>
+
+<script>
+let qty = 1;
+let shippingCost = 0;
+let shippingDelay = '2-3 jours ouvrés';
+
+function fmt(n) { return n.toFixed(2).replace('.', ',') + ' €'; }
+function fmtFree(n) { return n === 0 ? 'GRATUIT' : fmt(n); }
+
+function changeQty(d) {
+    qty = Math.max(1, Math.min(10, qty + d));
+    document.getElementById('qtyDisplay').textContent = qty;
+    updateSummary();
+}
+
+function updateSummary() {
+    const subtotal = 129 * qty;
+    const total = subtotal + shippingCost;
+    const savings = 199 * qty - subtotal;
+    document.getElementById('summaryQty').textContent = qty;
+    document.getElementById('summaryQty2').textContent = qty;
+    document.getElementById('summarySubtotal').textContent = fmt(subtotal);
+    document.getElementById('summaryShipping').textContent = fmtFree(shippingCost);
+    document.getElementById('summaryShipping').className = shippingCost === 0 ? 'val' : 'val';
+    document.getElementById('summaryShipping').style.color = shippingCost === 0 ? 'var(--success)' : 'var(--text)';
+    document.getElementById('summarySavings').textContent = `-35% · -${fmt(savings).replace(' €','')} €`;
+    document.getElementById('summaryTotal').textContent = fmt(total);
+    document.getElementById('payTotal').textContent = fmt(total);
+}
+
+async function updateShipping() {
+    const pays = document.getElementById('pays').value;
+    const res = await fetch('/api/shipping', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({pays})
+    });
+    const data = await res.json();
+    shippingCost = data.frais;
+    shippingDelay = data.delai;
+    document.getElementById('shippingDelay').textContent = data.delai;
+    document.getElementById('shippingPrice').textContent = data.frais === 0 ? 'GRATUIT' : fmt(data.frais);
+    document.getElementById('shippingPrice').className = data.frais === 0 ? 'shipping-price free' : 'shipping-price';
+    updateSummary();
+}
+
+function setStep(n) {
+    document.getElementById('step1').style.display = n === 1 ? 'block' : 'none';
+    document.getElementById('step2').style.display = n === 2 ? 'block' : 'none';
+    document.getElementById('step3').style.display = n === 3 ? 'block' : 'none';
+    [1,2,3].forEach(i => {
+        const el = document.getElementById('step' + i + 'Ind');
+        el.className = 'step' + (i < n ? ' done' : i === n ? ' active' : '');
+        el.querySelector('.step-num').textContent = i < n ? '✓' : i;
+    });
+}
+
+function goStep1() { setStep(1); }
+
+function goStep2() {
+    const prenom = document.getElementById('prenom').value.trim();
+    const nom = document.getElementById('nom').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const err = document.getElementById('errStep1');
+    if (!prenom || !nom || !email) {
+        err.textContent = 'Veuillez remplir tous les champs obligatoires.';
+        err.classList.add('show');
+        return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        err.textContent = 'Adresse email invalide.';
+        err.classList.add('show');
+        return;
+    }
+    err.classList.remove('show');
+    setStep(2);
+    window.scrollTo(0, 0);
+}
+
+function goStep3() {
+    const adresse = document.getElementById('adresse').value.trim();
+    const ville = document.getElementById('ville').value.trim();
+    const cp = document.getElementById('code_postal').value.trim();
+    const err = document.getElementById('errStep2');
+    if (!adresse || !ville || !cp) {
+        err.textContent = 'Veuillez remplir tous les champs d\'adresse.';
+        err.classList.add('show');
+        return;
+    }
+    err.classList.remove('show');
+
+    // Remplir récap
+    const recap = document.getElementById('recapContent');
+    recap.innerHTML = `
+        <div style="display:grid; gap:8px; font-size:13px;">
+            <div style="display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid var(--border);">
+                <span style="color:var(--text-muted);">Destinataire</span>
+                <span style="font-weight:500;">${document.getElementById('prenom').value} ${document.getElementById('nom').value}</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid var(--border);">
+                <span style="color:var(--text-muted);">Email</span>
+                <span>${document.getElementById('email').value}</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid var(--border);">
+                <span style="color:var(--text-muted);">Adresse</span>
+                <span style="text-align:right;">${adresse}<br>${cp} ${ville}<br>${document.getElementById('pays').value}</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; padding:6px 0;">
+                <span style="color:var(--text-muted);">Livraison</span>
+                <span style="color:var(--success);">${shippingCost === 0 ? 'Gratuite' : fmt(shippingCost)} · ${shippingDelay}</span>
+            </div>
+        </div>
+    `;
+    setStep(3);
+    window.scrollTo(0, 0);
+}
+
+async function submitOrder() {
+    const btn = document.getElementById('payBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<div class="spinner"></div> Traitement en cours...';
+    const err = document.getElementById('errStep3');
+    err.classList.remove('show');
+
+    const payload = {
+        email: document.getElementById('email').value.trim(),
+        prenom: document.getElementById('prenom').value.trim(),
+        nom: document.getElementById('nom').value.trim(),
+        telephone: document.getElementById('telephone').value.trim(),
+        adresse: document.getElementById('adresse').value.trim(),
+        ville: document.getElementById('ville').value.trim(),
+        code_postal: document.getElementById('code_postal').value.trim(),
+        pays: document.getElementById('pays').value,
+        quantite: qty
+    };
+
+    const token = localStorage.getItem('lumea_token');
+    const headers = {'Content-Type': 'application/json'};
+    if (token) headers['Authorization'] = 'Bearer ' + token;
+
+    try {
+        const res = await fetch('/api/checkout/session', {method:'POST', headers, body: JSON.stringify(payload)});
+        const data = await res.json();
+        if (!res.ok) {
+            err.textContent = data.error || 'Une erreur est survenue.';
+            err.classList.add('show');
+            btn.disabled = false;
+            btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg> Payer ${document.getElementById('payTotal').textContent} en toute sécurité`;
+            return;
+        }
+
+        if (data.mode === 'stripe' && data.url) {
+            window.location.href = data.url;
+        } else {
+            // Mode démo: confirmer directement
+            await fetch('/api/checkout/confirm', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({order_id: data.order_id})
+            });
+            showSuccess(data.order_id, payload);
+        }
+    } catch(e) {
+        err.textContent = 'Erreur réseau. Veuillez réessayer.';
+        err.classList.add('show');
+        btn.disabled = false;
+        btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg> Payer ${document.getElementById('payTotal').textContent} en toute sécurité`;
+    }
+}
+
+function showSuccess(orderId, data) {
+    document.getElementById('checkoutLayout').style.display = 'none';
+    const s = document.getElementById('successPage');
+    s.style.display = 'block';
+    const total = 129 * qty + shippingCost;
+    document.getElementById('orderDetailsBox').innerHTML = `
+        <div class="order-detail-row"><span class="label">N° de commande</span><span class="val">#${orderId}</span></div>
+        <div class="order-detail-row"><span class="label">Produit</span><span class="val">LUMÉA™ Pro × ${qty}</span></div>
+        <div class="order-detail-row"><span class="label">Destinataire</span><span class="val">${data.prenom} ${data.nom}</span></div>
+        <div class="order-detail-row"><span class="label">Email</span><span class="val">${data.email}</span></div>
+        <div class="order-detail-row"><span class="label">Livraison</span><span class="val">${data.adresse}, ${data.code_postal} ${data.ville}</span></div>
+        <div class="order-detail-row"><span class="label">Total payé</span><span class="val" style="color:var(--gold-dark); font-weight:600;">${fmt(total)}</span></div>
+        <div class="order-detail-row"><span class="label">Délai estimé</span><span class="val">${shippingDelay}</span></div>
+    `;
+    window.scrollTo(0, 0);
+}
+
+// Check if we're on success URL
+window.addEventListener('DOMContentLoaded', async () => {
+    const params = new URLSearchParams(window.location.search);
+    const orderId = params.get('order_id');
+    const demo = params.get('demo');
+    const sessionId = params.get('session_id');
+
+    if (orderId && (demo || sessionId)) {
+        if (demo) {
+            // Déjà confirmé côté serveur
+        }
+        // Afficher page succès générique
+        document.getElementById('checkoutLayout').style.display = 'none';
+        const s = document.getElementById('successPage');
+        s.style.display = 'block';
+        document.getElementById('orderDetailsBox').innerHTML = `
+            <div class="order-detail-row"><span class="label">N° de commande</span><span class="val">#${orderId}</span></div>
+            <div class="order-detail-row"><span class="label">Statut</span><span class="val" style="color:var(--success);">✓ Paiement confirmé</span></div>
+            <div class="order-detail-row"><span class="label">Email de confirmation</span><span class="val">Envoyé à votre adresse</span></div>
+        `;
+        return;
+    }
+
+    // Préremplir si connecté
+    const token = localStorage.getItem('lumea_token');
+    if (token) {
+        try {
+            const res = await fetch('/api/auth/me', {headers: {'Authorization': 'Bearer ' + token}});
+            if (res.ok) {
+                const user = await res.json();
+                if (user.prenom) document.getElementById('prenom').value = user.prenom;
+                if (user.nom) document.getElementById('nom').value = user.nom;
+                if (user.email) document.getElementById('email').value = user.email;
+                if (user.telephone) document.getElementById('telephone').value = user.telephone;
+                document.getElementById('loginLink').textContent = user.prenom || 'Mon compte';
+                document.getElementById('loginLink').href = '/account';
+            }
+        } catch(e) {}
+    }
+
+    updateSummary();
+});
+</script>
+</body>
+</html>

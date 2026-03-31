@@ -1,0 +1,2589 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUMÉA™ | Masque LED Luminothérapie Professionnelle</title>
+    <meta name="description" content="Transformez votre peau en 10 minutes par jour. Masque LED 7 couleurs utilisé par les dermatologues. Résultats visibles en 4 semaines. Livraison gratuite.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --color-cream: #FAF8F5;
+            --color-warm-white: #FFFDF9;
+            --color-text: #1A1A1A;
+            --color-text-soft: #4A4A4A;
+            --color-text-muted: #8A8A8A;
+            --color-gold: #C9A962;
+            --color-gold-dark: #A88B4A;
+            --color-rose: #E8D4D4;
+            --color-sage: #D4E0D4;
+            --color-lavender: #E0D8E8;
+            --color-border: #E8E4E0;
+            --color-success: #4A7C59;
+            --color-error: #C45C5C;
+            
+            --font-display: 'Cormorant Garamond', Georgia, serif;
+            --font-body: 'Montserrat', -apple-system, sans-serif;
+            
+            --shadow-soft: 0 4px 20px rgba(0,0,0,0.04);
+            --shadow-medium: 0 8px 40px rgba(0,0,0,0.08);
+            --shadow-glow: 0 0 60px rgba(201, 169, 98, 0.15);
+            
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            
+            --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-smooth: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+        
+        body {
+            font-family: var(--font-body);
+            font-weight: 400;
+            color: var(--color-text);
+            background: var(--color-cream);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+        
+        /* Typography */
+        h1, h2, h3, h4 {
+            font-family: var(--font-display);
+            font-weight: 400;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+        }
+        
+        h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); }
+        h2 { font-size: clamp(2rem, 4vw, 3rem); }
+        h3 { font-size: clamp(1.5rem, 3vw, 2rem); }
+        h4 { font-size: clamp(1.25rem, 2vw, 1.5rem); }
+        
+        p {
+            font-size: 1rem;
+            color: var(--color-text-soft);
+        }
+        
+        .text-small { font-size: 0.875rem; }
+        .text-xs { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; }
+        .text-gold { color: var(--color-gold-dark); }
+        .text-center { text-align: center; }
+        
+        /* Layout */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        
+        .container-narrow {
+            max-width: 800px;
+        }
+        
+        section {
+            padding: 100px 0;
+        }
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: var(--shadow-glow); }
+            50% { box-shadow: 0 0 80px rgba(201, 169, 98, 0.25); }
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+        
+        .animate-in {
+            animation: fadeInUp 0.8s var(--transition-smooth) forwards;
+            opacity: 0;
+        }
+        
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+        .delay-5 { animation-delay: 0.5s; }
+        
+        /* ============================================
+           HEADER & NAVIGATION
+           ============================================ */
+        
+        .announcement-bar {
+            background: var(--color-text);
+            color: var(--color-cream);
+            text-align: center;
+            padding: 10px 24px;
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+        }
+        
+        .announcement-bar strong {
+            color: var(--color-gold);
+        }
+        
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(250, 248, 245, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--color-border);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            font-family: var(--font-display);
+            font-size: 1.75rem;
+            font-weight: 400;
+            letter-spacing: 0.15em;
+            color: var(--color-text);
+            text-decoration: none;
+        }
+        
+        .logo span {
+            color: var(--color-gold-dark);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--color-text-soft);
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+            transition: color var(--transition-fast);
+            position: relative;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--color-gold);
+            transition: width var(--transition-fast);
+        }
+        
+        .nav-links a:hover {
+            color: var(--color-text);
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .nav-cta {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px 32px;
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            text-decoration: none;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+        
+        .btn-primary {
+            background: var(--color-text);
+            color: var(--color-cream);
+        }
+        
+        .btn-primary:hover {
+            background: var(--color-gold-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--color-text);
+            border: 1px solid var(--color-text);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--color-text);
+            color: var(--color-cream);
+        }
+        
+        .btn-gold {
+            background: linear-gradient(135deg, var(--color-gold) 0%, var(--color-gold-dark) 100%);
+            color: white;
+            font-weight: 600;
+        }
+        
+        .btn-gold:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(201, 169, 98, 0.4);
+        }
+        
+        .btn-large {
+            padding: 18px 48px;
+            font-size: 0.9rem;
+        }
+        
+        /* Mobile menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+        }
+        
+        .mobile-menu-btn span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--color-text);
+            margin: 5px 0;
+            transition: var(--transition-fast);
+        }
+        
+        /* ============================================
+           HERO SECTION
+           ============================================ */
+        
+        .hero {
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(180deg, var(--color-warm-white) 0%, var(--color-cream) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 80%;
+            height: 150%;
+            background: radial-gradient(ellipse, rgba(201, 169, 98, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        
+        .hero .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: white;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--color-text-soft);
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-soft);
+        }
+        
+        .hero-badge::before {
+            content: '★';
+            color: var(--color-gold);
+        }
+        
+        .hero h1 {
+            margin-bottom: 24px;
+            color: var(--color-text);
+        }
+        
+        .hero h1 em {
+            font-style: italic;
+            color: var(--color-gold-dark);
+        }
+        
+        .hero-subtitle {
+            font-size: 1.15rem;
+            color: var(--color-text-soft);
+            margin-bottom: 32px;
+            max-width: 480px;
+            line-height: 1.8;
+        }
+        
+        .hero-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+        
+        .hero-feature {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            color: var(--color-text-soft);
+        }
+        
+        .hero-feature svg {
+            width: 20px;
+            height: 20px;
+            color: var(--color-success);
+        }
+        
+        .hero-cta {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .hero-price {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .hero-price .original {
+            font-size: 0.9rem;
+            color: var(--color-text-muted);
+            text-decoration: line-through;
+        }
+        
+        .hero-price .current {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            color: var(--color-text);
+        }
+        
+        .hero-visual {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .hero-image-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            aspect-ratio: 1;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .hero-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero-image-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            height: 90%;
+            background: radial-gradient(circle, rgba(201, 169, 98, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: pulse-glow 4s ease-in-out infinite;
+        }
+        
+        .hero-floating-badge {
+            position: absolute;
+            background: white;
+            padding: 12px 20px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-medium);
+            font-size: 0.85rem;
+            z-index: 3;
+        }
+        
+        .hero-floating-badge.top-left {
+            top: 10%;
+            left: -10%;
+        }
+        
+        .hero-floating-badge.bottom-right {
+            bottom: 15%;
+            right: -5%;
+        }
+        
+        .hero-floating-badge strong {
+            display: block;
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: var(--color-gold-dark);
+        }
+        
+        /* ============================================
+           TRUST BADGES
+           ============================================ */
+        
+        .trust-bar {
+            background: white;
+            border-top: 1px solid var(--color-border);
+            border-bottom: 1px solid var(--color-border);
+            padding: 30px 0;
+        }
+        
+        .trust-bar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        
+        .trust-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.85rem;
+            color: var(--color-text-soft);
+        }
+        
+        .trust-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--color-cream);
+            border-radius: 50%;
+            color: var(--color-gold-dark);
+        }
+        
+        /* ============================================
+           PROBLEM/SOLUTION SECTION
+           ============================================ */
+        
+        .problem-section {
+            background: var(--color-text);
+            color: var(--color-cream);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .problem-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            pointer-events: none;
+        }
+        
+        .problem-section h2 {
+            color: var(--color-cream);
+            margin-bottom: 20px;
+        }
+        
+        .problem-section h2 em {
+            color: var(--color-gold);
+            font-style: italic;
+        }
+        
+        .problem-section p {
+            color: rgba(255,255,255,0.7);
+        }
+        
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 60px;
+            margin-top: 60px;
+        }
+        
+        .problem-card {
+            padding: 40px;
+            border-radius: var(--radius-lg);
+            position: relative;
+        }
+        
+        .problem-card.problems {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        
+        .problem-card.solution {
+            background: linear-gradient(135deg, rgba(201, 169, 98, 0.15) 0%, rgba(201, 169, 98, 0.05) 100%);
+            border: 1px solid rgba(201, 169, 98, 0.3);
+        }
+        
+        .problem-card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+        }
+        
+        .problem-card-header.red { color: #E57373; }
+        .problem-card-header.gold { color: var(--color-gold); }
+        
+        .problem-list {
+            list-style: none;
+        }
+        
+        .problem-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            color: rgba(255,255,255,0.8);
+            font-size: 0.95rem;
+        }
+        
+        .problem-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .problem-list li svg {
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        
+        .problem-list.problems li svg { color: #E57373; }
+        .problem-list.solution li svg { color: var(--color-gold); }
+        
+        /* ============================================
+           BENEFITS SECTION
+           ============================================ */
+        
+        .benefits-section {
+            background: var(--color-warm-white);
+        }
+        
+        .benefits-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 80px;
+        }
+        
+        .benefits-header h2 {
+            margin-bottom: 20px;
+        }
+        
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        
+        .benefit-card {
+            background: white;
+            padding: 40px 30px;
+            border-radius: var(--radius-lg);
+            text-align: center;
+            transition: all var(--transition-smooth);
+            border: 1px solid transparent;
+        }
+        
+        .benefit-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-medium);
+            border-color: var(--color-gold);
+        }
+        
+        .benefit-icon {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 1.75rem;
+        }
+        
+        .benefit-icon.red { background: #FDEAEA; }
+        .benefit-icon.blue { background: #E8F0FD; }
+        .benefit-icon.gold { background: #FDF6E8; }
+        .benefit-icon.green { background: #E8F6ED; }
+        .benefit-icon.purple { background: #F3E8FD; }
+        .benefit-icon.pink { background: #FDE8F0; }
+        
+        .benefit-card h4 {
+            margin-bottom: 12px;
+            color: var(--color-text);
+        }
+        
+        .benefit-card p {
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+        
+        /* ============================================
+           HOW IT WORKS - 7 COLORS
+           ============================================ */
+        
+        .colors-section {
+            background: var(--color-cream);
+            position: relative;
+        }
+        
+        .colors-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 60px;
+        }
+        
+        .colors-visual {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 60px;
+        }
+        
+        .mask-display {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            border-radius: 50% 50% 45% 45%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .mask-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 80%;
+            border-radius: inherit;
+            background: var(--glow-color, rgba(255,100,100,0.3));
+            filter: blur(30px);
+            transition: background 0.5s ease;
+        }
+        
+        .mask-inner {
+            position: relative;
+            z-index: 2;
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: white;
+            text-align: center;
+        }
+        
+        .colors-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 15px;
+        }
+        
+        .color-card {
+            background: white;
+            padding: 24px 16px;
+            border-radius: var(--radius-md);
+            text-align: center;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            border: 2px solid transparent;
+        }
+        
+        .color-card:hover,
+        .color-card.active {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-medium);
+        }
+        
+        .color-card.active {
+            border-color: var(--card-color);
+        }
+        
+        .color-dot {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin: 0 auto 12px;
+            box-shadow: 0 4px 15px var(--dot-shadow);
+        }
+        
+        .color-card h5 {
+            font-family: var(--font-body);
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--color-text);
+        }
+        
+        .color-card p {
+            font-size: 0.7rem;
+            color: var(--color-text-muted);
+            line-height: 1.4;
+        }
+        
+        /* ============================================
+           RESULTS / BEFORE-AFTER
+           ============================================ */
+        
+        .results-section {
+            background: white;
+        }
+        
+        .results-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 60px;
+        }
+        
+        .results-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-bottom: 80px;
+        }
+        
+        .stat-card {
+            text-align: center;
+            padding: 30px;
+        }
+        
+        .stat-number {
+            font-family: var(--font-display);
+            font-size: 3.5rem;
+            color: var(--color-gold-dark);
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+        
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--color-text-soft);
+        }
+        
+        .results-timeline {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+        }
+        
+        .timeline-card {
+            position: relative;
+            padding: 30px;
+            background: var(--color-cream);
+            border-radius: var(--radius-lg);
+            text-align: center;
+        }
+        
+        .timeline-week {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--color-gold);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+        
+        .timeline-card h4 {
+            margin: 20px 0 10px;
+        }
+        
+        .timeline-card p {
+            font-size: 0.85rem;
+        }
+        
+        /* ============================================
+           TESTIMONIALS
+           ============================================ */
+        
+        .testimonials-section {
+            background: var(--color-cream);
+        }
+        
+        .testimonials-header {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 60px;
+        }
+        
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        
+        .testimonial-card {
+            background: white;
+            padding: 36px;
+            border-radius: var(--radius-lg);
+            position: relative;
+        }
+        
+        .testimonial-card.featured {
+            grid-column: span 2;
+            grid-row: span 2;
+            padding: 48px;
+            background: linear-gradient(135deg, var(--color-text) 0%, #2a2a2a 100%);
+            color: var(--color-cream);
+        }
+        
+        .testimonial-card.featured p {
+            color: rgba(255,255,255,0.8);
+        }
+        
+        .testimonial-stars {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 16px;
+            color: var(--color-gold);
+            font-size: 1rem;
+        }
+        
+        .testimonial-text {
+            font-size: 1rem;
+            line-height: 1.8;
+            margin-bottom: 24px;
+        }
+        
+        .testimonial-card.featured .testimonial-text {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-style: italic;
+            line-height: 1.6;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .author-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--color-rose);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            color: var(--color-text);
+        }
+        
+        .testimonial-card.featured .author-avatar {
+            background: var(--color-gold);
+            color: white;
+        }
+        
+        .author-info strong {
+            display: block;
+            font-size: 0.9rem;
+        }
+        
+        .author-info span {
+            font-size: 0.8rem;
+            color: var(--color-text-muted);
+        }
+        
+        .testimonial-card.featured .author-info span {
+            color: rgba(255,255,255,0.5);
+        }
+        
+        .verified-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.7rem;
+            color: var(--color-success);
+            margin-top: 4px;
+        }
+        
+        /* ============================================
+           PRODUCT SHOWCASE
+           ============================================ */
+        
+        .product-section {
+            background: white;
+            padding: 120px 0;
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+        
+        .product-gallery {
+            position: relative;
+        }
+        
+        .product-main-image {
+            width: 100%;
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, var(--color-rose) 0%, var(--color-lavender) 100%);
+            border-radius: var(--radius-xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .product-main-image::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60%;
+            height: 60%;
+            background: radial-gradient(circle, rgba(201, 169, 98, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 1;
+        }
+        
+        .product-main-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: relative;
+            z-index: 2;
+            transition: transform var(--transition-smooth);
+        }
+        
+        .product-main-image:hover img {
+            transform: scale(1.03);
+        }
+        
+        .product-thumbnails {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        .product-thumb {
+            width: 80px;
+            height: 80px;
+            background: var(--color-cream);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            border: 2px solid transparent;
+            overflow: hidden;
+            padding: 0;
+        }
+        
+        .product-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .product-thumb:hover,
+        .product-thumb.active {
+            border-color: var(--color-gold);
+            box-shadow: 0 2px 8px rgba(201, 169, 98, 0.3);
+        }
+        
+        .product-details {
+            padding-right: 40px;
+        }
+        
+        .product-badge {
+            display: inline-block;
+            background: var(--color-success);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+        
+        .product-title {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+        
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .product-rating .stars {
+            color: var(--color-gold);
+        }
+        
+        .product-rating span {
+            font-size: 0.9rem;
+            color: var(--color-text-soft);
+        }
+        
+        .product-description {
+            font-size: 1.05rem;
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+        
+        .product-features-list {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+        
+        .product-features-list li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+            font-size: 0.95rem;
+            color: var(--color-text-soft);
+        }
+        
+        .product-features-list li svg {
+            color: var(--color-gold-dark);
+            flex-shrink: 0;
+        }
+        
+        .product-pricing {
+            background: var(--color-cream);
+            padding: 30px;
+            border-radius: var(--radius-lg);
+            margin-bottom: 24px;
+        }
+        
+        .pricing-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .pricing-original {
+            font-size: 1.25rem;
+            color: var(--color-text-muted);
+            text-decoration: line-through;
+        }
+        
+        .pricing-discount {
+            background: #FDEAEA;
+            color: var(--color-error);
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .pricing-current {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            color: var(--color-text);
+        }
+        
+        .pricing-note {
+            font-size: 0.85rem;
+            color: var(--color-text-muted);
+        }
+        
+        .product-buy-btn {
+            width: 100%;
+            padding: 20px;
+            font-size: 1rem;
+            margin-bottom: 16px;
+        }
+        
+        .product-guarantees {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            font-size: 0.8rem;
+            color: var(--color-text-muted);
+        }
+        
+        .product-guarantees span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        /* ============================================
+           FAQ SECTION
+           ============================================ */
+        
+        .faq-section {
+            background: var(--color-cream);
+        }
+        
+        .faq-header {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 60px;
+        }
+        
+        .faq-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .faq-item {
+            background: white;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+        
+        .faq-question {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--color-text);
+            text-align: left;
+            transition: background var(--transition-fast);
+        }
+        
+        .faq-question:hover {
+            background: var(--color-cream);
+        }
+        
+        .faq-question svg {
+            flex-shrink: 0;
+            transition: transform var(--transition-fast);
+        }
+        
+        .faq-item.open .faq-question svg {
+            transform: rotate(45deg);
+        }
+        
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height var(--transition-smooth);
+        }
+        
+        .faq-item.open .faq-answer {
+            max-height: 300px;
+        }
+        
+        .faq-answer-content {
+            padding: 0 24px 24px;
+            font-size: 0.95rem;
+            color: var(--color-text-soft);
+            line-height: 1.7;
+        }
+        
+        /* ============================================
+           GUARANTEES SECTION
+           ============================================ */
+        
+        .guarantees-section {
+            background: var(--color-text);
+            color: var(--color-cream);
+            padding: 80px 0;
+        }
+        
+        .guarantees-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+        }
+        
+        .guarantee-item {
+            text-align: center;
+        }
+        
+        .guarantee-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(201, 169, 98, 0.15);
+            border-radius: 50%;
+            font-size: 1.5rem;
+        }
+        
+        .guarantee-item h4 {
+            font-family: var(--font-body);
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--color-cream);
+        }
+        
+        .guarantee-item p {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.6);
+        }
+        
+        /* ============================================
+           FINAL CTA
+           ============================================ */
+        
+        .final-cta {
+            background: linear-gradient(135deg, var(--color-gold) 0%, var(--color-gold-dark) 100%);
+            color: white;
+            text-align: center;
+            padding: 100px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .final-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.08;
+        }
+        
+        .final-cta .container {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .final-cta h2 {
+            color: white;
+            margin-bottom: 20px;
+        }
+        
+        .final-cta p {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.15rem;
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+        
+        .final-cta .btn {
+            background: white;
+            color: var(--color-gold-dark);
+        }
+        
+        .final-cta .btn:hover {
+            background: var(--color-text);
+            color: white;
+        }
+        
+        .urgency-note {
+            margin-top: 24px;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .urgency-note strong {
+            background: rgba(255,255,255,0.2);
+            padding: 4px 12px;
+            border-radius: 50px;
+        }
+        
+        /* ============================================
+           FOOTER
+           ============================================ */
+        
+        footer {
+            background: var(--color-text);
+            color: rgba(255,255,255,0.6);
+            padding: 80px 0 40px;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 60px;
+        }
+        
+        .footer-brand .logo {
+            color: var(--color-cream);
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+        
+        .footer-brand p {
+            color: rgba(255,255,255,0.5);
+            font-size: 0.9rem;
+            line-height: 1.7;
+            margin-bottom: 24px;
+        }
+        
+        .footer-certifications {
+            display: flex;
+            gap: 16px;
+        }
+        
+        .cert-badge {
+            width: 50px;
+            height: 50px;
+            background: rgba(255,255,255,0.1);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6rem;
+            color: rgba(255,255,255,0.5);
+        }
+        
+        .footer-column h5 {
+            color: var(--color-cream);
+            font-family: var(--font-body);
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-column a {
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color var(--transition-fast);
+        }
+        
+        .footer-column a:hover {
+            color: var(--color-gold);
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .footer-bottom p {
+            font-size: 0.85rem;
+        }
+        
+        .payment-methods {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .payment-icon {
+            width: 45px;
+            height: 28px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6rem;
+            color: rgba(255,255,255,0.4);
+        }
+        
+        /* ============================================
+           MOBILE RESPONSIVE
+           ============================================ */
+        
+        @media (max-width: 1024px) {
+            .hero .container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .hero-content {
+                order: 2;
+            }
+            
+            .hero-visual {
+                order: 1;
+            }
+            
+            .hero-subtitle {
+                margin: 0 auto 32px;
+            }
+            
+            .hero-features {
+                justify-content: center;
+            }
+            
+            .hero-cta {
+                justify-content: center;
+            }
+            
+            .hero-floating-badge {
+                display: none;
+            }
+            
+            .problem-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .benefits-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .colors-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .results-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .results-timeline {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .testimonial-card.featured {
+                grid-column: span 1;
+                grid-row: span 1;
+            }
+            
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .product-details {
+                padding-right: 0;
+            }
+            
+            .faq-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .guarantees-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            section {
+                padding: 60px 0;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .trust-bar .container {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .benefits-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .colors-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .results-stats {
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+            }
+            
+            .stat-number {
+                font-size: 2.5rem;
+            }
+            
+            .results-timeline {
+                grid-template-columns: 1fr;
+            }
+            
+            .guarantees-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 16px;
+            }
+            
+            .colors-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .hero-cta {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .hero-cta .btn {
+                width: 100%;
+            }
+            
+            .product-thumbnails {
+                justify-content: center;
+            }
+        }
+        
+        /* Sticky Add to Cart Mobile */
+        .sticky-cart {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 16px 20px;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+            z-index: 999;
+        }
+        
+        @media (max-width: 768px) {
+            .sticky-cart {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            
+            .sticky-cart .price {
+                font-family: var(--font-display);
+                font-size: 1.5rem;
+            }
+            
+            .sticky-cart .btn {
+                padding: 14px 28px;
+            }
+            
+            body {
+                padding-bottom: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Announcement Bar -->
+    <div class="announcement-bar">
+        🎁 <strong>OFFRE LIMITÉE</strong> — Livraison GRATUITE + Guide skincare offert | Plus que <strong id="countdown">2:47:33</strong>
+    </div>
+    
+    <!-- Header -->
+    <header>
+        <nav>
+            <a href="#" class="logo">LUMÉA<span>™</span></a>
+            
+            <ul class="nav-links">
+                <li><a href="#benefits">Bienfaits</a></li>
+                <li><a href="#how-it-works">Comment ça marche</a></li>
+                <li><a href="#results">Résultats</a></li>
+                <li><a href="#testimonials">Avis</a></li>
+                <li><a href="#faq">FAQ</a></li>
+            </ul>
+            
+            <div class="nav-cta">
+                <a href="/checkout" class="btn btn-primary">Commander</a>
+            </div>
+            
+            <button class="mobile-menu-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+    </header>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content animate-in">
+                <div class="hero-badge">N°1 des ventes en France</div>
+                <h1>Révélez votre <em>éclat naturel</em> en 10 min/jour</h1>
+                <p class="hero-subtitle">Le masque LED professionnel utilisé par les dermatologues, maintenant chez vous. 7 longueurs d'onde pour traiter rides, acné et teint terne.</p>
+                
+                <div class="hero-features">
+                    <div class="hero-feature">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        Résultats visibles en 4 semaines
+                    </div>
+                    <div class="hero-feature">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        Certifié CE & FDA
+                    </div>
+                    <div class="hero-feature">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        Satisfait ou remboursé 60 jours
+                    </div>
+                </div>
+                
+                <div class="hero-cta">
+                    <a href="#product" class="btn btn-gold btn-large">
+                        Découvrir le masque
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </a>
+                    <div class="hero-price">
+                        <span class="original">199,00 €</span>
+                        <span class="current">129,00 €</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="hero-visual animate-in delay-2">
+                <div class="hero-image-wrapper">
+                    <div class="hero-image-bg"></div>
+                    <!-- Image principale du produit LUMÉA -->
+                    <img class="hero-image" 
+                         src="lumea-masque-1.jpg" 
+                         alt="LUMÉA Masque LED Luminothérapie"
+                         loading="eager">
+                </div>
+                
+                <div class="hero-floating-badge top-left animate-in delay-3">
+                    <strong>+12 500</strong>
+                    clientes satisfaites
+                </div>
+                
+                <div class="hero-floating-badge bottom-right animate-in delay-4">
+                    <strong>4.9/5</strong>
+                    Note moyenne
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Trust Bar -->
+    <div class="trust-bar">
+        <div class="container">
+            <div class="trust-item">
+                <div class="trust-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                </div>
+                <span>Paiement 100% sécurisé</span>
+            </div>
+            <div class="trust-item">
+                <div class="trust-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                </div>
+                <span>Livraison gratuite en France</span>
+            </div>
+            <div class="trust-item">
+                <div class="trust-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                </div>
+                <span>Expédié depuis l'Europe</span>
+            </div>
+            <div class="trust-item">
+                <div class="trust-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                </div>
+                <span>Garantie 60 jours</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Problem/Solution Section -->
+    <section class="problem-section">
+        <div class="container">
+            <div class="text-center">
+                <h2>Vous en avez assez de <em>cacher</em> votre peau ?</h2>
+                <p style="max-width: 600px; margin: 0 auto;">Des milliers de femmes partagent les mêmes frustrations. Nous avons développé LUMÉA pour y répondre.</p>
+            </div>
+            
+            <div class="problem-grid">
+                <div class="problem-card problems">
+                    <div class="problem-card-header red">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                        Ce que vous vivez peut-être
+                    </div>
+                    <ul class="problem-list problems">
+                        <li>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                            Des crèmes qui promettent tout mais ne changent rien
+                        </li>
+                        <li>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                            Des séances en institut à 150€ que vous ne pouvez pas maintenir
+                        </li>
+                        <li>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                            Cette fatigue qui se lit sur votre visage le matin
+                        </li>
+                        <li>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                            L'acné adulte qui vous suit depuis des années
+                        </li>
+                        <li>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                            Ces rides qui apparaissent un peu plus chaque jour
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="problem-card solution">
+                    <div class="problem-card-header gold">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                        Ce que LUMÉA vous apporte
+                    </div>
+                    <ul class="problem-list solution">
+                        <li>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            Une technologie approuvée par les dermatologues
+                        </li>
+                        <li>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            10 minutes par jour, chez vous, quand vous voulez
+                        </li>
+                        <li>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            Un teint visiblement plus lumineux dès la 2ème semaine
+                        </li>
+                        <li>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            Réduction de l'acné et des inflammations
+                        </li>
+                        <li>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            Production de collagène stimulée naturellement
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Benefits Section -->
+    <section class="benefits-section" id="benefits">
+        <div class="container">
+            <div class="benefits-header">
+                <h2>6 bienfaits prouvés scientifiquement</h2>
+                <p>La luminothérapie LED est utilisée en clinique dermatologique depuis plus de 20 ans. Nous l'avons rendue accessible chez vous.</p>
+            </div>
+            
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon red">✨</div>
+                    <h4>Anti-rides</h4>
+                    <p>La lumière rouge stimule la production de collagène et d'élastine pour réduire visiblement les rides et ridules.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon blue">💧</div>
+                    <h4>Anti-acné</h4>
+                    <p>La lumière bleue élimine les bactéries responsables de l'acné sans dessécher ni irriter votre peau.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon gold">☀️</div>
+                    <h4>Éclat du teint</h4>
+                    <p>Active la circulation sanguine pour un teint naturellement lumineux et une peau visiblement plus saine.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon green">🌿</div>
+                    <h4>Anti-inflammation</h4>
+                    <p>Apaise les rougeurs, la rosacée et les irritations grâce à des longueurs d'onde spécifiques.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon purple">🔬</div>
+                    <h4>Régénération cellulaire</h4>
+                    <p>Accélère le renouvellement des cellules pour une peau plus jeune et plus ferme.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon pink">💆</div>
+                    <h4>Relaxation</h4>
+                    <p>10 minutes de pause dans votre journée. Un moment rien que pour vous.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- How It Works - 7 Colors -->
+    <section class="colors-section" id="how-it-works">
+        <div class="container">
+            <div class="colors-header">
+                <h2>7 couleurs, 7 traitements ciblés</h2>
+                <p>Choisissez la lumière adaptée à vos besoins du jour. Chaque couleur cible un problème spécifique.</p>
+            </div>
+            
+            <div class="colors-visual">
+                <div class="mask-display" id="maskDisplay">
+                    <div class="mask-glow"></div>
+                    <div class="mask-inner">
+                        <div id="colorName">Rouge</div>
+                        <div style="font-size: 0.9rem; opacity: 0.7;">Anti-âge</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="colors-grid">
+                <div class="color-card active" data-color="red" data-glow="rgba(255,100,100,0.4)" style="--card-color: #ff6b6b;">
+                    <div class="color-dot" style="background: linear-gradient(135deg, #ff6b6b, #ee5a5a); --dot-shadow: rgba(255,107,107,0.4);"></div>
+                    <h5>Rouge</h5>
+                    <p>Anti-âge<br>Collagène</p>
+                </div>
+                
+                <div class="color-card" data-color="blue" data-glow="rgba(100,150,255,0.4)" style="--card-color: #6496ff;">
+                    <div class="color-dot" style="background: linear-gradient(135deg, #6496ff, #4a7de6); --dot-shadow: rgba(100,150,255,0.4);"></div>
+                    <h5>Bleu</h5>
+                    <p>Anti-acné<br>Antibactérien</p>
+                </div>
+                
+                <div class="color-card" data-color="green" data-glow="rgba(100,200,150,0.4)" style="--card-color: #64c896;">
+                    <div class="color-dot" style="background: linear-gradient(135deg, #64c896, #4ab07e); --dot-shadow: rgba(100,200,150,0.4);"></div>
+                    <h5>Vert</h5>
+                    <p>Équilibrant<br>Anti-taches</p>
+                </div>
+                
+                <div class="color-card" data-color="yellow" data-glow="rgba(255,200,100,0.4)" style="--card-color: #ffc864;">
+                    <div class="color-dot" style="background: linear-gradient(135deg, #ffc864, #e6b050); --dot-shadow: rgba(255,200,100,0.4);"></div>
+                    <h5>Jaune</h5>
+                    <p>Éclat<br>Détox</p>
+                </div>
+                
+                <div class="color-card" data-color="purple" data-glow="rgba(180,130,255,0.4)" style="--card-color: #b482ff;">
+                    <div class="color-dot" style="background: linear-gradient(135deg, #b482ff, #9a68e6); --dot-shadow: rgba(180,130,255,0.4);"></div>
+                    <h5>Violet</h5>
+                    <p>Relaxant<br>Circulation</p>
+                </div>
+                
+                <div class="color-card" data-color="cyan" data-glow="rgba(100,220,255,0.4)" style="--card-color: #64dcff;">
+                    <div class="color-dot" style="background: linear-gradient(135deg, #64dcff, #4ac8e6); --dot-shadow: rgba(100,220,255,0.4);"></div>
+                    <h5>Cyan</h5>
+                    <p>Apaisant<br>Sensibilité</p>
+                </div>
+                
+                <div class="color-card" data-color="white" data-glow="rgba(255,255,255,0.4)" style="--card-color: #ffffff;">
+                    <div class="color-dot" style="background: linear-gradient(135deg, #ffffff, #f0f0f0); --dot-shadow: rgba(200,200,200,0.4); border: 1px solid #e0e0e0;"></div>
+                    <h5>Blanc</h5>
+                    <p>Complet<br>Régénération</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Results Section -->
+    <section class="results-section" id="results">
+        <div class="container">
+            <div class="results-header">
+                <h2>Des résultats que vous pouvez voir</h2>
+                <p>Basé sur une étude clinique de 8 semaines réalisée sur 127 participantes.</p>
+            </div>
+            
+            <div class="results-stats">
+                <div class="stat-card">
+                    <div class="stat-number">94%</div>
+                    <div class="stat-label">Peau plus lumineuse</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">89%</div>
+                    <div class="stat-label">Rides réduites</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">91%</div>
+                    <div class="stat-label">Acné diminuée</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">97%</div>
+                    <div class="stat-label">Recommandent LUMÉA</div>
+                </div>
+            </div>
+            
+            <div class="results-timeline">
+                <div class="timeline-card">
+                    <span class="timeline-week">Semaine 1</span>
+                    <h4>Sensation</h4>
+                    <p>Peau plus douce au toucher, sensation de relaxation après chaque séance.</p>
+                </div>
+                <div class="timeline-card">
+                    <span class="timeline-week">Semaine 2</span>
+                    <h4>Éclat</h4>
+                    <p>Teint visiblement plus lumineux, premiers commentaires de votre entourage.</p>
+                </div>
+                <div class="timeline-card">
+                    <span class="timeline-week">Semaine 4</span>
+                    <h4>Transformation</h4>
+                    <p>Réduction visible des imperfections, peau plus ferme et plus lisse.</p>
+                </div>
+                <div class="timeline-card">
+                    <span class="timeline-week">Semaine 8</span>
+                    <h4>Révélation</h4>
+                    <p>Peau transformée. Vous vous reconnaissez enfin dans le miroir.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Testimonials Section -->
+    <section class="testimonials-section" id="testimonials">
+        <div class="container">
+            <div class="testimonials-header">
+                <h2>Ce qu'elles en disent</h2>
+                <p>Plus de 12 500 clientes satisfaites en France</p>
+            </div>
+            
+            <div class="testimonials-grid">
+                <div class="testimonial-card featured">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"Après 3 enfants, je ne me reconnaissais plus. LUMÉA m'a rendu ma confiance. En 6 semaines, mon mari m'a demandé ce que j'avais changé. Meilleur investissement beauté de ma vie."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">S</div>
+                        <div class="author-info">
+                            <strong>Sophie M.</strong>
+                            <span>Lyon • Achat vérifié</span>
+                            <div class="verified-badge">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                                Achat vérifié
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"J'avais tout essayé pour mon acné adulte. En 3 semaines avec la lumière bleue, 80% de mes boutons ont disparu."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">M</div>
+                        <div class="author-info">
+                            <strong>Marie L.</strong>
+                            <span>Paris</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"Sceptique au début, je suis bluffée. Mon esthéticienne m'a demandé quel soin j'avais fait !"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">C</div>
+                        <div class="author-info">
+                            <strong>Claire D.</strong>
+                            <span>Bordeaux</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"À 58 ans, je vois enfin une différence sur mes rides. Le masque est confortable et simple à utiliser."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">I</div>
+                        <div class="author-info">
+                            <strong>Isabelle R.</strong>
+                            <span>Nice</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★☆</div>
+                    <p class="testimonial-text">"Livraison rapide, produit de qualité. J'aurais aimé une notice en français plus détaillée mais le SAV m'a aidée."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">L</div>
+                        <div class="author-info">
+                            <strong>Laure B.</strong>
+                            <span>Toulouse</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Product Section -->
+    <section class="product-section" id="product">
+        <div class="container">
+            <div class="product-grid">
+                <div class="product-gallery">
+                    <!-- 
+                    =====================================================
+                    IMAGES PRODUIT - MASQUE LED SILICONE 3D FLEXIBLE
+                    =====================================================
+                    Produit Alibaba: New 3D LED Facial Mask Silicone
+                    Référence: 1601663841003
+                    
+                    POUR LA PRODUCTION: Téléchargez les images depuis votre 
+                    fournisseur et hébergez-les sur votre serveur/CDN.
+                    Remplacez les URLs ci-dessous par vos URLs définitives.
+                    =====================================================
+                    -->
+                    <div class="product-main-image" id="mainProductImage">
+                        <img src="lumea-masque-1.jpg" 
+                             alt="LUMÉA Masque LED Silicone 3D - Vue de face" 
+                             id="productMainImg">
+                    </div>
+                    <div class="product-thumbnails">
+                        <div class="product-thumb active" onclick="changeImage(0)" title="Vue de face">
+                            <img src="lumea-masque-1.jpg" 
+                                 alt="Vue face">
+                        </div>
+                        <div class="product-thumb" onclick="changeImage(1)" title="LED Rouge activée">
+                            <img src="lumea-masque-1.jpg" 
+                                 alt="LED Rouge">
+                        </div>
+                        <div class="product-thumb" onclick="changeImage(2)" title="Vue latérale">
+                            <img src="lumea-masque-1.jpg" 
+                                 alt="Vue côté">
+                        </div>
+                        <div class="product-thumb" onclick="changeImage(3)" title="Coffret complet">
+                            <img src="lumea-masque-1.jpg" 
+                                 alt="Coffret">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-details">
+                    <div class="product-badge">🔥 Bestseller 2026</div>
+                    <h2 class="product-title">LUMÉA™ Pro Masque LED</h2>
+                    
+                    <div class="product-rating">
+                        <span class="stars">★★★★★</span>
+                        <span>4.9/5 basé sur 2,847 avis</span>
+                    </div>
+                    
+                    <p class="product-description">
+                        Le masque de luminothérapie professionnel avec 7 longueurs d'onde LED. Technologie utilisée en cabinet dermatologique, maintenant accessible chez vous.
+                    </p>
+                    
+                    <ul class="product-features-list">
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            7 couleurs LED pour tous les besoins
+                        </li>
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            150 LED de qualité médicale
+                        </li>
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            Silicone 3D flexible et confortable
+                        </li>
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            Sans fil, rechargeable USB-C
+                        </li>
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            Timer automatique 10/15/20 min
+                        </li>
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            Certifié CE, RoHS, FCC
+                        </li>
+                    </ul>
+                    
+                    <div class="product-pricing">
+                        <div class="pricing-row">
+                            <span class="pricing-original">199,00 €</span>
+                            <span class="pricing-discount">-35% AUJOURD'HUI</span>
+                        </div>
+                        <div class="pricing-row">
+                            <span class="pricing-current">129,00 €</span>
+                            <span class="pricing-note">ou 3x 43€ sans frais</span>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-gold btn-large product-buy-btn" onclick="window.location='/checkout'">
+                        🛒 Commander — 129,00 €
+                    </button>
+                    
+                    <div class="product-guarantees">
+                        <span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                            Paiement sécurisé
+                        </span>
+                        <span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                            Livraison gratuite
+                        </span>
+                        <span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline></svg>
+                            Garantie 60 jours
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- FAQ Section -->
+    <section class="faq-section" id="faq">
+        <div class="container">
+            <div class="faq-header">
+                <h2>Questions fréquentes</h2>
+                <p>Tout ce que vous devez savoir avant de commander</p>
+            </div>
+            
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Est-ce vraiment efficace ?
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Oui ! La luminothérapie LED est utilisée en cabinet dermatologique depuis plus de 20 ans. Des centaines d'études cliniques prouvent son efficacité sur l'acné, les rides et l'éclat du teint. LUMÉA utilise les mêmes longueurs d'onde que les appareils professionnels.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Combien de temps pour voir des résultats ?
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            La plupart de nos clientes constatent une amélioration de l'éclat dès la 2ème semaine. Pour les rides et l'acné, comptez 4 à 8 semaines d'utilisation régulière (10 min/jour, 4-5 fois par semaine).
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Est-ce sans danger pour ma peau ?
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Absolument. Contrairement aux UV, les LED n'émettent aucun rayonnement nocif. LUMÉA est certifié CE et utilise des LED de qualité médicale. Le traitement est non-invasif, indolore et convient à tous les types de peau.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Quel est le délai de livraison ?
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Nous expédions depuis notre entrepôt européen sous 24-48h. La livraison en France métropolitaine prend 3-5 jours ouvrés. Vous recevrez un numéro de suivi par email dès l'expédition.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Et si je ne suis pas satisfaite ?
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Nous offrons une garantie Satisfaite ou Remboursée de 60 jours. Si vous n'êtes pas convaincue par les résultats, renvoyez simplement le produit et nous vous remboursons intégralement, sans questions. C'est notre engagement qualité.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Quelle est la durée de vie du masque ?
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Les LED de LUMÉA ont une durée de vie de 50 000 heures, soit plus de 20 ans d'utilisation quotidienne. La batterie rechargeable offre environ 10 séances par charge et peut être rechargée plus de 500 fois.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Guarantees Section -->
+    <section class="guarantees-section">
+        <div class="container">
+            <div class="guarantees-grid">
+                <div class="guarantee-item">
+                    <div class="guarantee-icon">🛡️</div>
+                    <h4>Garantie 60 jours</h4>
+                    <p>Satisfaite ou remboursée, sans conditions</p>
+                </div>
+                <div class="guarantee-item">
+                    <div class="guarantee-icon">🚚</div>
+                    <h4>Livraison gratuite</h4>
+                    <p>Expédition sous 24-48h depuis l'Europe</p>
+                </div>
+                <div class="guarantee-item">
+                    <div class="guarantee-icon">🔒</div>
+                    <h4>Paiement sécurisé</h4>
+                    <p>Cryptage SSL 256 bits</p>
+                </div>
+                <div class="guarantee-item">
+                    <div class="guarantee-icon">💬</div>
+                    <h4>Support français</h4>
+                    <p>Équipe disponible 7j/7</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Final CTA -->
+    <section class="final-cta">
+        <div class="container">
+            <h2>Prête à révéler votre éclat naturel ?</h2>
+            <p>Rejoignez les 12 500+ femmes qui ont transformé leur peau avec LUMÉA. Offre limitée : -35% + livraison gratuite.</p>
+            <a href="/checkout" class="btn btn-large">
+                Commander maintenant — 129,00 €
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+            <p class="urgency-note">
+                <strong>⏰ Plus que 47 unités en stock</strong> — Offre valable jusqu'à épuisement
+            </p>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="#" class="logo">LUMÉA<span>™</span></a>
+                    <p>Technologie de luminothérapie professionnelle accessible à toutes. Notre mission : révéler la beauté naturelle de chaque femme.</p>
+                    <div class="footer-certifications">
+                        <div class="cert-badge">CE</div>
+                        <div class="cert-badge">RoHS</div>
+                        <div class="cert-badge">FCC</div>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h5>Boutique</h5>
+                    <ul>
+                        <li><a href="#product">Masque LED Pro</a></li>
+                        <li><a href="#">Accessoires</a></li>
+                        <li><a href="#">Offres spéciales</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h5>Support</h5>
+                    <ul>
+                        <li><a href="#faq">FAQ</a></li>
+                        <li><a href="#">Nous contacter</a></li>
+                        <li><a href="/account">Suivi de commande</a></li>
+                        <li><a href="#">Retours</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h5>Légal</h5>
+                    <ul>
+                        <li><a href="#">CGV</a></li>
+                        <li><a href="#">Politique de confidentialité</a></li>
+                        <li><a href="#">Mentions légales</a></li>
+                        <li><a href="#">Cookies</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>© 2026 LUMÉA™ — Tous droits réservés</p>
+                <div class="payment-methods">
+                    <div class="payment-icon">VISA</div>
+                    <div class="payment-icon">MC</div>
+                    <div class="payment-icon">AMEX</div>
+                    <div class="payment-icon">PP</div>
+                    <div class="payment-icon">CB</div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Sticky Cart Mobile -->
+    <div class="sticky-cart">
+        <div class="price">129,00 €</div>
+        <a href="/checkout" class="btn btn-gold">Commander</a>
+    </div>
+    
+    <!-- JavaScript -->
+    <script>
+        // Countdown Timer
+        function updateCountdown() {
+            const countdownEl = document.getElementById('countdown');
+            let [hours, minutes, seconds] = countdownEl.textContent.split(':').map(Number);
+            
+            if (seconds > 0) {
+                seconds--;
+            } else {
+                seconds = 59;
+                if (minutes > 0) {
+                    minutes--;
+                } else {
+                    minutes = 59;
+                    if (hours > 0) {
+                        hours--;
+                    } else {
+                        hours = 2;
+                        minutes = 59;
+                        seconds = 59;
+                    }
+                }
+            }
+            
+            countdownEl.textContent = 
+                String(hours).padStart(1, '0') + ':' + 
+                String(minutes).padStart(2, '0') + ':' + 
+                String(seconds).padStart(2, '0');
+        }
+        
+        setInterval(updateCountdown, 1000);
+        
+        // FAQ Accordion
+        document.querySelectorAll('.faq-question').forEach(button => {
+            button.addEventListener('click', () => {
+                const item = button.parentElement;
+                const isOpen = item.classList.contains('open');
+                
+                // Close all
+                document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+                
+                // Open clicked if wasn't open
+                if (!isOpen) {
+                    item.classList.add('open');
+                }
+            });
+        });
+        
+        // Color Selector for mask display
+        const colorCards = document.querySelectorAll('.color-card');
+        const maskGlow = document.querySelector('.mask-glow');
+        const colorName = document.getElementById('colorName');
+        
+        const colorData = {
+            red: { name: 'Rouge', sub: 'Anti-âge' },
+            blue: { name: 'Bleu', sub: 'Anti-acné' },
+            green: { name: 'Vert', sub: 'Équilibrant' },
+            yellow: { name: 'Jaune', sub: 'Éclat' },
+            purple: { name: 'Violet', sub: 'Relaxant' },
+            cyan: { name: 'Cyan', sub: 'Apaisant' },
+            white: { name: 'Blanc', sub: 'Complet' }
+        };
+        
+        colorCards.forEach(card => {
+            card.addEventListener('click', () => {
+                colorCards.forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+                
+                const color = card.dataset.color;
+                const glow = card.dataset.glow;
+                
+                maskGlow.style.background = glow;
+                colorName.parentElement.innerHTML = `
+                    <div>${colorData[color].name}</div>
+                    <div style="font-size: 0.9rem; opacity: 0.7;">${colorData[color].sub}</div>
+                `;
+            });
+        });
+        
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+        
+        // Animate elements on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.benefit-card, .timeline-card, .testimonial-card, .stat-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+        
+        // Product Gallery Image Switcher
+        /*
+        =====================================================
+        IMAGES PRODUIT LUMÉA
+        =====================================================
+        Pour ajouter plus d'images, uploadez-les et ajoutez 
+        leurs noms dans le tableau ci-dessous.
+        
+        Nommage: lumea-masque-1.jpg, lumea-masque-2.jpg, etc.
+        =====================================================
+        */
+        const productImages = [
+            'lumea-masque-1.jpg',  // Vue principale avec télécommande
+            'lumea-masque-1.jpg',  // À remplacer par: lumea-masque-2.jpg (LED allumées)
+            'lumea-masque-1.jpg',  // À remplacer par: lumea-masque-3.jpg (vue côté)
+            'lumea-masque-1.jpg'   // À remplacer par: lumea-masque-4.jpg (coffret)
+        ];
+        
+        function changeImage(index) {
+            const mainImg = document.getElementById('productMainImg');
+            const thumbs = document.querySelectorAll('.product-thumb');
+            
+            // Animation de transition
+            mainImg.style.opacity = '0.5';
+            mainImg.style.transform = 'scale(0.98)';
+            
+            setTimeout(() => {
+                mainImg.src = productImages[index];
+                mainImg.style.opacity = '1';
+                mainImg.style.transform = 'scale(1)';
+            }, 150);
+            
+            // Update active thumbnail
+            thumbs.forEach((thumb, i) => {
+                thumb.classList.toggle('active', i === index);
+            });
+        }
+        
+        // Précharger les images pour une navigation fluide
+        productImages.forEach(src => {
+            const img = new Image();
+            img.src = src;
+        });
+        
+        // Handle image loading errors with elegant fallback
+        document.querySelectorAll('.product-gallery img, .hero-image').forEach(img => {
+            img.onerror = function() {
+                // Créer un placeholder élégant
+                this.src = 'data:image/svg+xml,' + encodeURIComponent(`
+                    <svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400">
+                        <defs>
+                            <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#E8D4D4"/>
+                                <stop offset="100%" style="stop-color:#E0D8E8"/>
+                            </linearGradient>
+                        </defs>
+                        <rect fill="url(#bg)" width="400" height="400"/>
+                        <text x="200" y="180" text-anchor="middle" font-family="Georgia" font-size="32" fill="#C9A962">LUMÉA™</text>
+                        <text x="200" y="220" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#8A8A8A">Image à configurer</text>
+                    </svg>
+                `);
+            };
+        });
+    </script>
+</body>
+</html>

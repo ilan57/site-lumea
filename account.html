@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Compte — LUMÉA™</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cream: #FAF8F5;
+            --gold: #C9A962;
+            --gold-dark: #A88B4A;
+            --text: #1A1A1A;
+            --text-soft: #4A4A4A;
+            --text-muted: #8A8A8A;
+            --border: #E8E4E0;
+            --success: #4A7C59;
+            --error: #C45C5C;
+            --font-display: 'Cormorant Garamond', Georgia, serif;
+            --font-body: 'Montserrat', sans-serif;
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: var(--font-body); background: var(--cream); color: var(--text); font-size: 14px; line-height: 1.7; }
+
+        .header {
+            background: #fff;
+            border-bottom: 1px solid var(--border);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky; top: 0; z-index: 100;
+        }
+        .logo { font-family: var(--font-display); font-size: 1.5rem; letter-spacing: 0.1em; color: var(--text); font-weight: 600; text-decoration: none; }
+        .logo span { color: var(--gold-dark); }
+        .header-nav { display: flex; align-items: center; gap: 20px; }
+        .header-nav a { font-size: 13px; color: var(--text-soft); text-decoration: none; }
+        .header-nav a:hover { color: var(--gold-dark); }
+
+        .page-wrapper { max-width: 900px; margin: 0 auto; padding: 40px 24px; }
+        @media(max-width:600px) { .page-wrapper { padding: 24px 16px; } }
+
+        /* AUTH FORMS */
+        .auth-container { max-width: 420px; margin: 40px auto; }
+        .auth-tabs { display: flex; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 24px; }
+        .auth-tab {
+            flex: 1; padding: 12px;
+            background: none; border: none; cursor: pointer;
+            font-family: var(--font-body); font-size: 13px; font-weight: 500;
+            color: var(--text-muted);
+            transition: background 0.2s, color 0.2s;
+        }
+        .auth-tab.active { background: var(--gold); color: #fff; }
+        .auth-form { display: none; }
+        .auth-form.active { display: block; }
+
+        .card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 28px;
+            margin-bottom: 16px;
+        }
+        .card h3 {
+            font-family: var(--font-display);
+            font-size: 1.3rem; font-weight: 400;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .form-group { margin-bottom: 14px; }
+        .form-group label { display: block; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-soft); margin-bottom: 6px; }
+        .form-group input {
+            width: 100%; padding: 11px 14px;
+            border: 1px solid var(--border); border-radius: 8px;
+            font-family: var(--font-body); font-size: 14px; color: var(--text);
+            outline: none; transition: border-color 0.2s;
+        }
+        .form-group input:focus { border-color: var(--gold); }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        @media(max-width:480px) { .form-row { grid-template-columns: 1fr; } }
+
+        .btn-primary {
+            width: 100%; padding: 13px;
+            background: var(--gold); color: #fff;
+            border: none; border-radius: 8px;
+            font-family: var(--font-body); font-size: 14px; font-weight: 600;
+            cursor: pointer; transition: background 0.2s;
+        }
+        .btn-primary:hover { background: var(--gold-dark); }
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+        .btn-outline {
+            padding: 9px 18px;
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: var(--font-body); font-size: 13px; color: var(--text-soft);
+            cursor: pointer;
+        }
+        .btn-outline:hover { background: var(--border); }
+
+        .msg { padding: 10px 14px; border-radius: 8px; font-size: 13px; margin-bottom: 14px; }
+        .msg-error { background: #fef2f2; color: var(--error); border: 1px solid #fca5a5; display: none; }
+        .msg-success { background: #f0fdf4; color: var(--success); border: 1px solid #86efac; display: none; }
+        .msg.show { display: block; }
+
+        /* ACCOUNT */
+        .account-header {
+            display: flex; align-items: center; gap: 16px; margin-bottom: 32px;
+        }
+        .avatar {
+            width: 56px; height: 56px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            display: flex; align-items: center; justify-content: center;
+            font-family: var(--font-display); font-size: 1.5rem; color: #fff; font-weight: 600;
+        }
+        .account-header h2 { font-family: var(--font-display); font-size: 1.8rem; font-weight: 400; }
+        .account-header p { font-size: 12px; color: var(--text-muted); }
+
+        .account-tabs { display: flex; gap: 4px; margin-bottom: 24px; border-bottom: 1px solid var(--border); }
+        .acc-tab {
+            padding: 10px 16px; background: none; border: none;
+            font-family: var(--font-body); font-size: 13px; font-weight: 500;
+            color: var(--text-muted); cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: color 0.2s, border-color 0.2s;
+            margin-bottom: -1px;
+        }
+        .acc-tab.active { color: var(--gold-dark); border-bottom-color: var(--gold-dark); }
+
+        /* Orders table */
+        .orders-list { display: flex; flex-direction: column; gap: 12px; }
+        .order-card {
+            background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px;
+        }
+        .order-card-top {
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;
+            flex-wrap: wrap; gap: 8px;
+        }
+        .order-id { font-weight: 600; font-size: 14px; }
+        .order-date { font-size: 12px; color: var(--text-muted); }
+        .order-total { font-weight: 600; color: var(--gold-dark); }
+        .status-badge {
+            display: inline-block; padding: 3px 10px; border-radius: 20px;
+            font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase;
+        }
+        .status-payee { background: #f0fdf4; color: var(--success); }
+        .status-en_attente { background: #fff7ed; color: #c2760c; }
+        .status-expediee { background: #eff6ff; color: #2563eb; }
+        .status-livree { background: #f0fdf4; color: var(--success); }
+        .status-annulee { background: #fef2f2; color: var(--error); }
+        .order-details { display: flex; gap: 24px; font-size: 13px; color: var(--text-soft); flex-wrap: wrap; }
+        .order-tracking { margin-top: 8px; font-size: 12px; color: var(--text-muted); }
+        .order-tracking a { color: var(--gold-dark); }
+        .empty-orders {
+            text-align: center; padding: 60px 24px;
+            color: var(--text-muted);
+        }
+        .empty-orders p { margin-bottom: 20px; }
+
+        /* Logout */
+        .logout-btn {
+            background: none; border: 1px solid #fca5a5; border-radius: 8px;
+            padding: 8px 16px; color: var(--error); font-family: var(--font-body);
+            font-size: 13px; cursor: pointer;
+        }
+        .logout-btn:hover { background: #fef2f2; }
+
+        .spinner {
+            width: 18px; height: 18px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            display: inline-block;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <a href="/" class="logo">LUMÉA<span>™</span></a>
+    <div class="header-nav">
+        <a href="/">Boutique</a>
+        <a href="/checkout">Commander</a>
+    </div>
+</header>
+
+<div class="page-wrapper">
+
+    <!-- AUTH -->
+    <div id="authSection" class="auth-container" style="display:none">
+        <h2 style="font-family:var(--font-display); font-size:2rem; font-weight:400; text-align:center; margin-bottom:24px;">Mon Compte</h2>
+
+        <div class="auth-tabs">
+            <button class="auth-tab active" onclick="switchAuthTab('login')">Se connecter</button>
+            <button class="auth-tab" onclick="switchAuthTab('register')">Créer un compte</button>
+        </div>
+
+        <!-- Login -->
+        <div class="auth-form active" id="loginForm">
+            <div class="card" style="padding:24px">
+                <div class="msg msg-error" id="loginErr"></div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="loginEmail" placeholder="marie@exemple.fr">
+                </div>
+                <div class="form-group">
+                    <label>Mot de passe</label>
+                    <input type="password" id="loginPassword" placeholder="••••••••">
+                </div>
+                <button class="btn-primary" onclick="doLogin()" id="loginBtn">Se connecter</button>
+            </div>
+        </div>
+
+        <!-- Register -->
+        <div class="auth-form" id="registerForm">
+            <div class="card" style="padding:24px">
+                <div class="msg msg-error" id="registerErr"></div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Prénom</label>
+                        <input type="text" id="regPrenom" placeholder="Marie">
+                    </div>
+                    <div class="form-group">
+                        <label>Nom</label>
+                        <input type="text" id="regNom" placeholder="Martin">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="regEmail" placeholder="marie@exemple.fr">
+                </div>
+                <div class="form-group">
+                    <label>Mot de passe (6 caractères min)</label>
+                    <input type="password" id="regPassword" placeholder="••••••••">
+                </div>
+                <button class="btn-primary" onclick="doRegister()" id="registerBtn">Créer mon compte</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ACCOUNT DASHBOARD -->
+    <div id="accountSection" style="display:none">
+        <div class="account-header">
+            <div class="avatar" id="userAvatar">?</div>
+            <div>
+                <h2 id="userName">—</h2>
+                <p id="userEmail">—</p>
+            </div>
+            <button class="logout-btn" onclick="logout()" style="margin-left:auto">Déconnexion</button>
+        </div>
+
+        <div class="account-tabs">
+            <button class="acc-tab active" onclick="showTab('orders')">Mes commandes</button>
+            <button class="acc-tab" onclick="showTab('profile')">Mon profil</button>
+        </div>
+
+        <!-- Orders tab -->
+        <div id="ordersTab">
+            <div id="ordersContent">
+                <p style="color:var(--text-muted); font-size:13px;">Chargement...</p>
+            </div>
+        </div>
+
+        <!-- Profile tab -->
+        <div id="profileTab" style="display:none">
+            <div class="card">
+                <h3>Informations personnelles</h3>
+                <div class="msg msg-success" id="profileSuccess"></div>
+                <div class="msg msg-error" id="profileErr"></div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Prénom</label>
+                        <input type="text" id="profilePrenom">
+                    </div>
+                    <div class="form-group">
+                        <label>Nom</label>
+                        <input type="text" id="profileNom">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="profileEmail" disabled style="background:#f9f9f9; color:var(--text-muted)">
+                </div>
+                <div class="form-group">
+                    <label>Téléphone</label>
+                    <input type="tel" id="profileTel">
+                </div>
+                <button class="btn-primary" onclick="saveProfile()" style="max-width:200px;">Enregistrer</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+let currentUser = null;
+const token = () => localStorage.getItem('lumea_token');
+
+function switchAuthTab(tab) {
+    document.getElementById('loginForm').classList.toggle('active', tab === 'login');
+    document.getElementById('registerForm').classList.toggle('active', tab === 'register');
+    document.querySelectorAll('.auth-tab').forEach((el, i) => {
+        el.classList.toggle('active', (i === 0 && tab === 'login') || (i === 1 && tab === 'register'));
+    });
+}
+
+function showTab(tab) {
+    document.getElementById('ordersTab').style.display = tab === 'orders' ? 'block' : 'none';
+    document.getElementById('profileTab').style.display = tab === 'profile' ? 'block' : 'none';
+    document.querySelectorAll('.acc-tab').forEach((el, i) => {
+        el.classList.toggle('active', (i === 0 && tab === 'orders') || (i === 1 && tab === 'profile'));
+    });
+}
+
+async function doLogin() {
+    const btn = document.getElementById('loginBtn');
+    const err = document.getElementById('loginErr');
+    err.classList.remove('show');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>';
+
+    const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            email: document.getElementById('loginEmail').value.trim(),
+            password: document.getElementById('loginPassword').value
+        })
+    });
+    const data = await res.json();
+    btn.disabled = false;
+    btn.innerHTML = 'Se connecter';
+
+    if (!res.ok) {
+        err.textContent = data.error || 'Erreur de connexion';
+        err.classList.add('show');
+        return;
+    }
+    localStorage.setItem('lumea_token', data.token);
+    loadAccount(data.user);
+}
+
+async function doRegister() {
+    const btn = document.getElementById('registerBtn');
+    const err = document.getElementById('registerErr');
+    err.classList.remove('show');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>';
+
+    const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            email: document.getElementById('regEmail').value.trim(),
+            password: document.getElementById('regPassword').value,
+            prenom: document.getElementById('regPrenom').value.trim(),
+            nom: document.getElementById('regNom').value.trim()
+        })
+    });
+    const data = await res.json();
+    btn.disabled = false;
+    btn.innerHTML = 'Créer mon compte';
+
+    if (!res.ok) {
+        err.textContent = data.error || 'Erreur lors de la création';
+        err.classList.add('show');
+        return;
+    }
+    localStorage.setItem('lumea_token', data.token);
+    loadAccount(data.user);
+}
+
+async function loadAccount(user) {
+    if (!user) {
+        try {
+            const res = await fetch('/api/auth/me', {headers: {'Authorization': 'Bearer ' + token()}});
+            if (!res.ok) { showAuth(); return; }
+            user = await res.json();
+        } catch(e) { showAuth(); return; }
+    }
+    currentUser = user;
+    document.getElementById('authSection').style.display = 'none';
+    document.getElementById('accountSection').style.display = 'block';
+    const initials = ((user.prenom || '')[0] || '?').toUpperCase();
+    document.getElementById('userAvatar').textContent = initials;
+    document.getElementById('userName').textContent = [user.prenom, user.nom].filter(Boolean).join(' ') || user.email;
+    document.getElementById('userEmail').textContent = user.email;
+    document.getElementById('profilePrenom').value = user.prenom || '';
+    document.getElementById('profileNom').value = user.nom || '';
+    document.getElementById('profileEmail').value = user.email || '';
+    document.getElementById('profileTel').value = user.telephone || '';
+    loadOrders();
+}
+
+async function loadOrders() {
+    const res = await fetch('/api/orders', {headers: {'Authorization': 'Bearer ' + token()}});
+    const orders = await res.json();
+    const container = document.getElementById('ordersContent');
+
+    if (!orders.length) {
+        container.innerHTML = `
+            <div class="empty-orders">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--text-muted); margin-bottom:16px;"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                <p>Vous n'avez pas encore de commande.</p>
+                <a href="/checkout" style="display:inline-block; padding:11px 24px; background:var(--gold); color:#fff; border-radius:8px; font-weight:600; text-decoration:none; font-size:13px;">Commander mon masque</a>
+            </div>`;
+        return;
+    }
+
+    const statusLabels = {
+        en_attente: 'En attente', payee: 'Payée', expediee: 'Expédiée',
+        livree: 'Livrée', annulee: 'Annulée'
+    };
+
+    container.innerHTML = '<div class="orders-list">' + orders.map(o => `
+        <div class="order-card">
+            <div class="order-card-top">
+                <div>
+                    <div class="order-id">Commande #${o.id}</div>
+                    <div class="order-date">${new Date(o.created_at).toLocaleDateString('fr-FR', {day:'numeric', month:'long', year:'numeric'})}</div>
+                </div>
+                <span class="status-badge status-${o.statut}">${statusLabels[o.statut] || o.statut}</span>
+                <div class="order-total">${o.total.toFixed(2).replace('.', ',')} €</div>
+            </div>
+            <div class="order-details">
+                <span>LUMÉA™ Pro × ${o.quantite}</span>
+                <span>${o.adresse}, ${o.code_postal} ${o.ville}</span>
+            </div>
+            ${o.tracking_number ? `<div class="order-tracking">Numéro de suivi : <a href="#" target="_blank">${o.tracking_number}</a></div>` : ''}
+        </div>`).join('') + '</div>';
+}
+
+async function saveProfile() {
+    const success = document.getElementById('profileSuccess');
+    const err = document.getElementById('profileErr');
+    success.classList.remove('show');
+    err.classList.remove('show');
+    const res = await fetch('/api/auth/update', {
+        method: 'PUT',
+        headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token()},
+        body: JSON.stringify({
+            prenom: document.getElementById('profilePrenom').value.trim(),
+            nom: document.getElementById('profileNom').value.trim(),
+            telephone: document.getElementById('profileTel').value.trim()
+        })
+    });
+    if (res.ok) {
+        success.textContent = 'Profil mis à jour avec succès.';
+        success.classList.add('show');
+    } else {
+        err.textContent = 'Erreur lors de la sauvegarde.';
+        err.classList.add('show');
+    }
+}
+
+function showAuth() {
+    document.getElementById('authSection').style.display = 'block';
+    document.getElementById('accountSection').style.display = 'none';
+}
+
+function logout() {
+    localStorage.removeItem('lumea_token');
+    showAuth();
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+    if (token()) {
+        loadAccount(null);
+    } else {
+        showAuth();
+    }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin — LUMÉA™</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cream: #FAF8F5;
+            --gold: #C9A962;
+            --gold-dark: #A88B4A;
+            --text: #1A1A1A;
+            --text-soft: #4A4A4A;
+            --text-muted: #8A8A8A;
+            --border: #E8E4E0;
+            --success: #4A7C59;
+            --error: #C45C5C;
+            --sidebar-bg: #1A1A1A;
+            --sidebar-text: #e0d8cc;
+            --sidebar-active: #C9A962;
+            --font-display: 'Cormorant Garamond', Georgia, serif;
+            --font-body: 'Montserrat', sans-serif;
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: var(--font-body); background: #f4f2ee; color: var(--text); font-size: 14px; line-height: 1.6; }
+
+        /* LOGIN */
+        .login-wrap {
+            min-height: 100vh; display: flex; align-items: center;
+            justify-content: center; background: var(--cream);
+        }
+        .login-card {
+            background: #fff; border: 1px solid var(--border);
+            border-radius: 16px; padding: 40px; width: 380px;
+        }
+        .login-card h2 { font-family: var(--font-display); font-size: 2rem; font-weight: 400; text-align: center; margin-bottom: 6px; }
+        .login-card p { text-align: center; color: var(--text-muted); font-size: 13px; margin-bottom: 24px; }
+        .form-group { margin-bottom: 14px; }
+        .form-group label { display: block; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-soft); margin-bottom: 6px; }
+        .form-group input {
+            width: 100%; padding: 11px 14px;
+            border: 1px solid var(--border); border-radius: 8px;
+            font-family: var(--font-body); font-size: 14px; color: var(--text);
+            outline: none; transition: border-color 0.2s;
+        }
+        .form-group input:focus { border-color: var(--gold); }
+        .btn-primary {
+            width: 100%; padding: 13px;
+            background: var(--gold); color: #fff;
+            border: none; border-radius: 8px;
+            font-family: var(--font-body); font-size: 14px; font-weight: 600;
+            cursor: pointer; transition: background 0.2s;
+        }
+        .btn-primary:hover { background: var(--gold-dark); }
+        .msg-error { background: #fef2f2; color: var(--error); border: 1px solid #fca5a5; border-radius: 8px; padding: 10px 14px; font-size: 13px; margin-bottom: 14px; display: none; }
+        .msg-error.show { display: block; }
+
+        /* LAYOUT */
+        .admin-layout { display: flex; min-height: 100vh; }
+
+        .sidebar {
+            width: 220px; background: var(--sidebar-bg); flex-shrink: 0;
+            display: flex; flex-direction: column;
+            position: fixed; top: 0; left: 0; bottom: 0; z-index: 200;
+        }
+        .sidebar-logo {
+            padding: 24px 20px;
+            font-family: var(--font-display);
+            font-size: 1.4rem; font-weight: 600;
+            color: #fff; letter-spacing: 0.1em;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+        .sidebar-logo span { color: var(--gold); }
+        .sidebar-subtitle { font-size: 10px; font-family: var(--font-body); color: rgba(255,255,255,0.3); letter-spacing: 0.15em; text-transform: uppercase; }
+        .sidebar-nav { flex: 1; padding: 16px 0; }
+        .nav-item {
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px 20px;
+            color: var(--sidebar-text); font-size: 13px; font-weight: 500;
+            cursor: pointer; border: none; background: none;
+            width: 100%; text-align: left;
+            border-left: 3px solid transparent;
+            transition: background 0.15s, color 0.15s;
+        }
+        .nav-item:hover { background: rgba(255,255,255,0.05); color: #fff; }
+        .nav-item.active { background: rgba(201,169,98,0.12); color: var(--gold); border-left-color: var(--gold); }
+        .nav-item svg { opacity: 0.6; flex-shrink: 0; }
+        .nav-item.active svg { opacity: 1; }
+        .sidebar-footer { padding: 16px 20px; border-top: 1px solid rgba(255,255,255,0.08); }
+        .sidebar-footer button { background: none; border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; padding: 7px 14px; color: rgba(255,255,255,0.5); font-family: var(--font-body); font-size: 12px; cursor: pointer; width: 100%; }
+        .sidebar-footer button:hover { background: rgba(255,255,255,0.05); color: #fff; }
+
+        .main-content { margin-left: 220px; flex: 1; padding: 28px; }
+        @media(max-width:700px) { .sidebar { width: 100%; height: 56px; flex-direction: row; bottom: auto; } .main-content { margin-left: 0; margin-top: 56px; } .sidebar-nav { display: flex; overflow-x: auto; } }
+
+        /* Top bar */
+        .top-bar {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 28px;
+        }
+        .top-bar h1 { font-family: var(--font-display); font-size: 1.8rem; font-weight: 400; }
+
+        /* Stats */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; margin-bottom: 28px; }
+        .stat-card {
+            background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 20px;
+        }
+        .stat-label { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
+        .stat-value { font-size: 1.8rem; font-family: var(--font-display); font-weight: 600; }
+        .stat-sub { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+        .stat-gold { color: var(--gold-dark); }
+        .stat-success { color: var(--success); }
+        .stat-blue { color: #2563eb; }
+
+        /* Table */
+        .table-card { background: #fff; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 20px; }
+        .table-header { padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 10px; }
+        .table-header h3 { font-family: var(--font-display); font-size: 1.2rem; font-weight: 400; }
+        .filter-bar { display: flex; gap: 8px; flex-wrap: wrap; }
+        .filter-btn {
+            padding: 5px 12px; border: 1px solid var(--border); border-radius: 20px;
+            font-family: var(--font-body); font-size: 12px; font-weight: 500;
+            cursor: pointer; background: none; color: var(--text-soft);
+            transition: background 0.15s, color 0.15s;
+        }
+        .filter-btn.active { background: var(--gold); color: #fff; border-color: var(--gold); }
+        .search-input {
+            padding: 7px 12px; border: 1px solid var(--border); border-radius: 8px;
+            font-family: var(--font-body); font-size: 13px; outline: none; width: 200px;
+        }
+        .search-input:focus { border-color: var(--gold); }
+        table { width: 100%; border-collapse: collapse; }
+        th { padding: 10px 16px; text-align: left; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); background: #faf9f7; border-bottom: 1px solid var(--border); }
+        td { padding: 12px 16px; border-bottom: 1px solid var(--border); font-size: 13px; vertical-align: middle; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: #fdf9f5; }
+        .status-badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }
+        .status-payee { background: #f0fdf4; color: var(--success); }
+        .status-en_attente { background: #fff7ed; color: #c2760c; }
+        .status-expediee { background: #eff6ff; color: #2563eb; }
+        .status-livree { background: #f0fdf4; color: var(--success); }
+        .status-annulee { background: #fef2f2; color: var(--error); }
+        .action-btn { padding: 5px 10px; border: 1px solid var(--border); border-radius: 6px; background: none; cursor: pointer; font-size: 12px; font-family: var(--font-body); color: var(--text-soft); }
+        .action-btn:hover { background: var(--border); }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+            display: none; z-index: 1000; align-items: center; justify-content: center; padding: 20px;
+        }
+        .modal-overlay.open { display: flex; }
+        .modal {
+            background: #fff; border-radius: 16px; padding: 28px;
+            width: 100%; max-width: 520px; max-height: 90vh; overflow-y: auto;
+        }
+        .modal h3 { font-family: var(--font-display); font-size: 1.4rem; font-weight: 400; margin-bottom: 20px; }
+        .detail-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+        .detail-row:last-child { border-bottom: none; }
+        .detail-row .label { color: var(--text-muted); }
+        .detail-row .val { font-weight: 500; text-align: right; }
+        .modal-actions { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+        .select-status {
+            padding: 8px 12px; border: 1px solid var(--border); border-radius: 8px;
+            font-family: var(--font-body); font-size: 13px; outline: none; flex: 1;
+        }
+        .tracking-input {
+            padding: 8px 12px; border: 1px solid var(--border); border-radius: 8px;
+            font-family: var(--font-body); font-size: 13px; outline: none; flex: 1;
+        }
+        .btn-save { padding: 9px 20px; background: var(--gold); color: #fff; border: none; border-radius: 8px; font-family: var(--font-body); font-weight: 600; cursor: pointer; }
+        .btn-save:hover { background: var(--gold-dark); }
+        .btn-close { padding: 9px 16px; background: none; border: 1px solid var(--border); border-radius: 8px; font-family: var(--font-body); font-size: 13px; cursor: pointer; }
+
+        /* Stock */
+        .stock-card { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 24px; max-width: 400px; }
+        .stock-card h3 { font-family: var(--font-display); font-size: 1.3rem; font-weight: 400; margin-bottom: 20px; }
+        .stock-row { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+        .stock-row label { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-soft); width: 100px; }
+        .stock-row input { flex: 1; padding: 9px 12px; border: 1px solid var(--border); border-radius: 8px; font-family: var(--font-body); font-size: 14px; outline: none; }
+        .stock-row input:focus { border-color: var(--gold); }
+        .stock-low { background: #fff7ed; color: #c2760c; padding: 8px 12px; border-radius: 8px; font-size: 12px; margin-bottom: 14px; display: none; }
+
+        .msg-success-sm { background: #f0fdf4; color: var(--success); border: 1px solid #86efac; border-radius: 8px; padding: 8px 12px; font-size: 13px; margin-bottom: 12px; display: none; }
+        .msg-success-sm.show { display: block; }
+
+        .spinner { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; display: inline-block; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-wrap" id="loginWrap">
+    <div class="login-card">
+        <h2>LUMÉA<span style="color:var(--gold-dark)">™</span></h2>
+        <p>Panneau d'administration</p>
+        <div class="msg-error" id="loginErr"></div>
+        <div class="form-group">
+            <label>Email admin</label>
+            <input type="email" id="adminEmail" placeholder="admin@lumea.fr" value="admin@lumea.fr">
+        </div>
+        <div class="form-group">
+            <label>Mot de passe</label>
+            <input type="password" id="adminPassword" placeholder="••••••••" onkeydown="if(event.key==='Enter')doAdminLogin()">
+        </div>
+        <button class="btn-primary" id="loginBtn" onclick="doAdminLogin()">Se connecter</button>
+    </div>
+</div>
+
+<!-- ADMIN -->
+<div class="admin-layout" id="adminLayout" style="display:none">
+    <aside class="sidebar">
+        <div class="sidebar-logo">LUMÉA<span>™</span><br><span class="sidebar-subtitle">Administration</span></div>
+        <nav class="sidebar-nav">
+            <button class="nav-item active" onclick="showSection('dashboard')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                Tableau de bord
+            </button>
+            <button class="nav-item" onclick="showSection('orders')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                Commandes
+            </button>
+            <button class="nav-item" onclick="showSection('stock')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+                Stock & Prix
+            </button>
+        </nav>
+        <div class="sidebar-footer">
+            <button onclick="adminLogout()">Déconnexion</button>
+        </div>
+    </aside>
+
+    <main class="main-content">
+
+        <!-- DASHBOARD -->
+        <div id="sectionDashboard">
+            <div class="top-bar">
+                <h1>Tableau de bord</h1>
+                <button onclick="loadDashboard()" style="background:none;border:1px solid var(--border);border-radius:8px;padding:7px 14px;cursor:pointer;font-size:12px;font-family:var(--font-body);">↻ Actualiser</button>
+            </div>
+            <div class="stats-grid" id="statsGrid">
+                <div class="stat-card"><div class="stat-label">Chargement</div><div class="stat-value">…</div></div>
+            </div>
+        </div>
+
+        <!-- ORDERS -->
+        <div id="sectionOrders" style="display:none">
+            <div class="top-bar">
+                <h1>Commandes</h1>
+            </div>
+            <div class="table-card">
+                <div class="table-header">
+                    <h3>Toutes les commandes</h3>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+                        <input class="search-input" id="orderSearch" placeholder="Rechercher..." oninput="searchOrders(this.value)">
+                        <div class="filter-bar" id="filterBar">
+                            <button class="filter-btn active" onclick="filterOrders('')">Toutes</button>
+                            <button class="filter-btn" onclick="filterOrders('payee')">Payées</button>
+                            <button class="filter-btn" onclick="filterOrders('expediee')">Expédiées</button>
+                            <button class="filter-btn" onclick="filterOrders('livree')">Livrées</button>
+                            <button class="filter-btn" onclick="filterOrders('en_attente')">En attente</button>
+                        </div>
+                    </div>
+                </div>
+                <div style="overflow-x:auto">
+                    <table id="ordersTable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Client</th>
+                                <th>Email</th>
+                                <th>Qté</th>
+                                <th>Total</th>
+                                <th>Statut</th>
+                                <th>Date</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordersBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- STOCK -->
+        <div id="sectionStock" style="display:none">
+            <div class="top-bar">
+                <h1>Stock & Prix</h1>
+            </div>
+            <div class="stock-card">
+                <h3>LUMÉA™ Pro Masque LED</h3>
+                <div class="msg-success-sm" id="stockSuccess"></div>
+                <div class="stock-low" id="stockLowAlert">⚠️ Stock faible — pensez à réapprovisionner.</div>
+                <div class="stock-row">
+                    <label>Stock</label>
+                    <input type="number" id="stockQty" min="0" placeholder="47">
+                </div>
+                <div class="stock-row">
+                    <label>Prix (€)</label>
+                    <input type="number" id="stockPrice" min="0" step="0.01" placeholder="129.00">
+                </div>
+                <button class="btn-save" onclick="saveStock()">Enregistrer</button>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<!-- ORDER DETAIL MODAL -->
+<div class="modal-overlay" id="orderModal">
+    <div class="modal">
+        <h3>Détail commande <span id="modalOrderId"></span></h3>
+        <div id="modalContent"></div>
+        <div class="modal-actions">
+            <select class="select-status" id="modalStatus">
+                <option value="en_attente">En attente</option>
+                <option value="payee">Payée</option>
+                <option value="expediee">Expédiée</option>
+                <option value="livree">Livrée</option>
+                <option value="annulee">Annulée</option>
+            </select>
+            <input class="tracking-input" id="modalTracking" placeholder="N° de suivi (optionnel)">
+        </div>
+        <div class="modal-actions" style="margin-top:10px;">
+            <button class="btn-save" onclick="saveOrder()">Enregistrer</button>
+            <button class="btn-close" onclick="closeModal()">Fermer</button>
+        </div>
+    </div>
+</div>
+
+<script>
+let adminToken = null;
+let currentOrderId = null;
+const statusLabels = { en_attente:'En attente', payee:'Payée', expediee:'Expédiée', livree:'Livrée', annulee:'Annulée' };
+const authHeader = () => ({'Content-Type':'application/json', 'Authorization':'Bearer '+adminToken});
+
+async function doAdminLogin() {
+    const btn = document.getElementById('loginBtn');
+    const err = document.getElementById('loginErr');
+    err.classList.remove('show');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>';
+
+    const res = await fetch('/api/admin/login', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({
+            email: document.getElementById('adminEmail').value.trim(),
+            password: document.getElementById('adminPassword').value
+        })
+    });
+    const data = await res.json();
+    btn.disabled = false;
+    btn.innerHTML = 'Se connecter';
+
+    if (!res.ok) {
+        err.textContent = data.error || 'Identifiants incorrects';
+        err.classList.add('show');
+        return;
+    }
+    adminToken = data.token;
+    localStorage.setItem('lumea_admin_token', adminToken);
+    document.getElementById('loginWrap').style.display = 'none';
+    document.getElementById('adminLayout').style.display = 'flex';
+    loadDashboard();
+    loadOrders();
+    loadStock();
+}
+
+function adminLogout() {
+    adminToken = null;
+    localStorage.removeItem('lumea_admin_token');
+    document.getElementById('loginWrap').style.display = 'flex';
+    document.getElementById('adminLayout').style.display = 'none';
+}
+
+function showSection(name) {
+    ['dashboard','orders','stock'].forEach(s => {
+        document.getElementById('section'+s.charAt(0).toUpperCase()+s.slice(1)).style.display = s === name ? 'block' : 'none';
+    });
+    document.querySelectorAll('.nav-item').forEach((el,i) => {
+        el.classList.toggle('active', ['dashboard','orders','stock'][i] === name);
+    });
+}
+
+async function loadDashboard() {
+    const res = await fetch('/api/admin/stats', {headers: authHeader()});
+    if (!res.ok) return;
+    const s = await res.json();
+    document.getElementById('statsGrid').innerHTML = `
+        <div class="stat-card">
+            <div class="stat-label">Chiffre d'affaires</div>
+            <div class="stat-value stat-gold">${s.revenue.toFixed(0)} €</div>
+            <div class="stat-sub">30 jours : +${s.revenue_30d.toFixed(0)} €</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Commandes totales</div>
+            <div class="stat-value">${s.total_orders}</div>
+            <div class="stat-sub">toutes périodes</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">À expédier</div>
+            <div class="stat-value stat-blue">${s.pending}</div>
+            <div class="stat-sub">commandes payées</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">En transit</div>
+            <div class="stat-value">${s.shipped}</div>
+            <div class="stat-sub">colis expédiés</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Livrées</div>
+            <div class="stat-value stat-success">${s.delivered}</div>
+            <div class="stat-sub">confirmées</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Stock restant</div>
+            <div class="stat-value ${s.stock <= 10 ? 'stat-gold' : ''}">${s.stock}</div>
+            <div class="stat-sub">unités · ${s.prix.toFixed(2)} € chacune</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Clients</div>
+            <div class="stat-value">${s.customers}</div>
+            <div class="stat-sub">comptes créés</div>
+        </div>
+    `;
+}
+
+let allOrders = [];
+
+async function loadOrders(statut = '', q = '') {
+    let url = '/api/admin/orders?';
+    if (q) url += `q=${encodeURIComponent(q)}`;
+    else if (statut) url += `statut=${statut}`;
+    const res = await fetch(url, {headers: authHeader()});
+    allOrders = await res.json();
+    renderOrders(allOrders);
+}
+
+function renderOrders(orders) {
+    const tbody = document.getElementById('ordersBody');
+    if (!orders.length) {
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:30px; color:var(--text-muted);">Aucune commande</td></tr>';
+        return;
+    }
+    tbody.innerHTML = orders.map(o => `
+        <tr>
+            <td><strong>#${o.id}</strong></td>
+            <td>${o.prenom} ${o.nom}</td>
+            <td style="color:var(--text-muted)">${o.email}</td>
+            <td>${o.quantite}</td>
+            <td><strong>${o.total.toFixed(2).replace('.',',')} €</strong></td>
+            <td><span class="status-badge status-${o.statut}">${statusLabels[o.statut] || o.statut}</span></td>
+            <td style="color:var(--text-muted); font-size:12px">${new Date(o.created_at).toLocaleDateString('fr-FR')}</td>
+            <td><button class="action-btn" onclick="openOrder(${o.id})">Détails</button></td>
+        </tr>
+    `).join('');
+}
+
+let searchTimeout;
+function searchOrders(q) {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(() => loadOrders('', q), 300);
+}
+
+function filterOrders(statut) {
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.textContent.trim().toLowerCase().includes(statut) || (statut === '' && btn.textContent.trim() === 'Toutes'));
+    });
+    loadOrders(statut);
+}
+
+async function openOrder(id) {
+    const res = await fetch(`/api/admin/orders/${id}`, {headers: authHeader()});
+    const o = await res.json();
+    currentOrderId = id;
+    document.getElementById('modalOrderId').textContent = '#' + id;
+    document.getElementById('modalStatus').value = o.statut;
+    document.getElementById('modalTracking').value = o.tracking_number || '';
+    document.getElementById('modalContent').innerHTML = `
+        <div class="detail-row"><span class="label">Client</span><span class="val">${o.prenom} ${o.nom}</span></div>
+        <div class="detail-row"><span class="label">Email</span><span class="val">${o.email}</span></div>
+        <div class="detail-row"><span class="label">Téléphone</span><span class="val">${o.telephone || '—'}</span></div>
+        <div class="detail-row"><span class="label">Adresse</span><span class="val">${o.adresse}<br>${o.code_postal} ${o.ville}<br>${o.pays}</span></div>
+        <div class="detail-row"><span class="label">Produit</span><span class="val">LUMÉA™ Pro × ${o.quantite}</span></div>
+        <div class="detail-row"><span class="label">Livraison</span><span class="val">${o.frais_livraison === 0 ? 'Gratuite' : o.frais_livraison.toFixed(2) + ' €'}</span></div>
+        <div class="detail-row"><span class="label">Total</span><span class="val" style="color:var(--gold-dark); font-weight:700;">${o.total.toFixed(2).replace('.',',')} €</span></div>
+        <div class="detail-row"><span class="label">Date</span><span class="val">${new Date(o.created_at).toLocaleString('fr-FR')}</span></div>
+        ${o.notes ? `<div class="detail-row"><span class="label">Notes</span><span class="val">${o.notes}</span></div>` : ''}
+    `;
+    document.getElementById('orderModal').classList.add('open');
+}
+
+async function saveOrder() {
+    const res = await fetch(`/api/admin/orders/${currentOrderId}`, {
+        method: 'PUT',
+        headers: authHeader(),
+        body: JSON.stringify({
+            statut: document.getElementById('modalStatus').value,
+            tracking_number: document.getElementById('modalTracking').value.trim() || null
+        })
+    });
+    if (res.ok) { closeModal(); loadOrders(); loadDashboard(); }
+}
+
+function closeModal() {
+    document.getElementById('orderModal').classList.remove('open');
+    currentOrderId = null;
+}
+
+async function loadStock() {
+    const res = await fetch('/api/admin/stock', {headers: authHeader()});
+    const p = await res.json();
+    document.getElementById('stockQty').value = p.stock;
+    document.getElementById('stockPrice').value = p.prix;
+    if (p.stock <= 10) document.getElementById('stockLowAlert').style.display = 'block';
+}
+
+async function saveStock() {
+    const stock = parseInt(document.getElementById('stockQty').value);
+    const prix = parseFloat(document.getElementById('stockPrice').value);
+    const res = await fetch('/api/admin/stock', {
+        method: 'PUT',
+        headers: authHeader(),
+        body: JSON.stringify({stock, prix})
+    });
+    if (res.ok) {
+        const s = document.getElementById('stockSuccess');
+        s.textContent = 'Stock mis à jour.';
+        s.classList.add('show');
+        setTimeout(() => s.classList.remove('show'), 3000);
+        document.getElementById('stockLowAlert').style.display = stock <= 10 ? 'block' : 'none';
+    }
+}
+
+// Close modal on overlay click
+document.getElementById('orderModal').addEventListener('click', e => {
+    if (e.target === document.getElementById('orderModal')) closeModal();
+});
+
+window.addEventListener('DOMContentLoaded', () => {
+    const saved = localStorage.getItem('lumea_admin_token');
+    if (saved) {
+        adminToken = saved;
+        document.getElementById('loginWrap').style.display = 'none';
+        document.getElementById('adminLayout').style.display = 'flex';
+        loadDashboard();
+        loadOrders();
+        loadStock();
+    }
+});
+</script>
+</body>
+</html>
